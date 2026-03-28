@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ProductCard from '@/components/ProductCard'
 import TimerDisplay from '@/components/TimerDisplay'
+import WaitlistSection from '@/components/WaitlistSection'
 import { Satellite, Bluetooth, Brain, ChevronRight, Smartphone, Apple } from 'lucide-react'
 
 export default function Home() {
@@ -41,7 +41,7 @@ export default function Home() {
                   className="section-label mb-4 animate-fade-up opacity-0"
                   style={{ animationFillMode: 'forwards' }}
                 >
-                  GPS Lap Timer per Auto e Moto
+                  GPS Lap Timer per Auto e Moto da Pista
                 </p>
                 <h1
                   className="font-display font-black uppercase leading-none text-white mb-6 animate-fade-up opacity-0 delay-100"
@@ -59,40 +59,57 @@ export default function Home() {
                   Il tuo coach in pista
                 </p>
                 <p
-                  className="text-data/80 text-base leading-relaxed max-w-md mb-10 animate-fade-up opacity-0 delay-300"
+                  className="text-data/80 text-base leading-relaxed max-w-md mb-6 animate-fade-up opacity-0 delay-300"
                   style={{ animationFillMode: 'forwards' }}
                 >
-                  Precisione professionale a ogni giro. Il device GPS 20Hz si monta in secondi sulla tua auto o moto e
-                  comunica in tempo reale con l&apos;app tramite Bluetooth. Analisi AI inclusa.
+                  App gratuita per iOS e Android. Usala subito con il GPS del tuo telefono,
+                  oppure abbinala al device LapCoach per GPS 20Hz professionale e massima precisione.
                 </p>
+
+                {/* Comparison table */}
+                <div
+                  className="mb-8 animate-fade-up opacity-0 delay-300"
+                  style={{ animationFillMode: 'forwards' }}
+                >
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-pit-600">
+                        <th className="text-left pb-2 text-pit-400 font-display font-bold text-xs uppercase tracking-wider w-1/3"></th>
+                        <th className="pb-2 text-center text-lap font-display font-bold text-xs uppercase tracking-wider">
+                          App gratuita
+                        </th>
+                        <th className="pb-2 text-center text-amber font-display font-bold text-xs uppercase tracking-wider">
+                          App + Device
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        ['GPS',       'Telefono ~1Hz', '20Hz dedicato'],
+                        ['Precisione','~5m',           '<1m'],
+                        ['Batteria',  'Telefono',      'Autonoma'],
+                        ['Prezzo',    'Gratis',        '€89'],
+                      ].map(([label, free, paid], i) => (
+                        <tr key={label} className={`${i < 3 ? 'border-b border-pit-700/50' : ''}`}>
+                          <td className="py-2 text-pit-400 font-display text-xs uppercase tracking-wider">{label}</td>
+                          <td className="py-2 text-center text-data/70 text-xs">{free}</td>
+                          <td className="py-2 text-center text-white text-xs font-medium">{paid}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
 
                 <div
                   className="flex flex-wrap gap-3 animate-fade-up opacity-0 delay-400"
                   style={{ animationFillMode: 'forwards' }}
                 >
                   <a href="#download" className="btn-amber">
-                    Scarica l&apos;app
+                    Scarica l&apos;app — Gratis
                   </a>
                   <a href="#shop" className="btn-outline">
-                    Acquista il device
+                    Acquista il device — €89
                   </a>
-                </div>
-
-                {/* Trust bar */}
-                <div
-                  className="flex gap-6 mt-10 animate-fade-up opacity-0 delay-500"
-                  style={{ animationFillMode: 'forwards' }}
-                >
-                  {[
-                    ['€69', 'device completo'],
-                    ['Free', 'app iOS & Android'],
-                    ['20Hz', 'GPS precision'],
-                  ].map(([val, label]) => (
-                    <div key={val} className="text-center">
-                      <p className="font-display font-black text-2xl text-amber">{val}</p>
-                      <p className="text-xs text-pit-400 uppercase tracking-wider mt-0.5">{label}</p>
-                    </div>
-                  ))}
                 </div>
               </div>
 
@@ -140,9 +157,9 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-5 py-4">
             <div className="flex flex-wrap justify-center md:justify-between gap-6 md:gap-0">
               {[
-                ['20 Hz', 'frequenza GPS'],
+                ['20 Hz', 'GPS del device'],
                 ['Bluetooth', 'connessione stabile'],
-                ['€69', 'device completo'],
+                ['€89', 'device opzionale'],
                 ['Free', 'app iOS & Android'],
               ].map(([val, label]) => (
                 <div key={val} className="flex items-center gap-3 px-4 border-l border-pit-600 first:border-l-0">
@@ -190,8 +207,8 @@ export default function Home() {
                       {[
                         ['50ms', 'risoluzione'],
                         ['u-blox M10', 'chip GPS'],
-                        ['±0.5m', 'accuratezza'],
-                        ['18+ sats', 'lock tipico'],
+                        ['20×', 'vs GPS telefono'],
+                        ['L1 C/A', 'segnale'],
                       ].map(([v, l]) => (
                         <div key={v} className="bg-pit-800 px-3 py-2">
                           <p className="font-display font-bold text-lg text-amber">{v}</p>
@@ -219,18 +236,10 @@ export default function Home() {
                       velocità, posizione, tempi parziali.
                     </p>
                     <div className="mt-4 flex gap-3">
-                      {[
-                        ['&lt;15ms', 'latenza BLE'],
-                        ['50m+', 'range'],
-                      ].map(([v, l]) => (
-                        <div key={l} className="bg-pit-800 px-3 py-2 flex-1">
-                          <p
-                            className="font-display font-bold text-lg text-amber"
-                            dangerouslySetInnerHTML={{ __html: v }}
-                          />
-                          <p className="text-[10px] text-pit-400 uppercase tracking-wider">{l}</p>
-                        </div>
-                      ))}
+                      <div className="bg-pit-800 px-3 py-2 flex-1">
+                        <p className="font-display font-bold text-lg text-amber">&lt;15ms</p>
+                        <p className="text-[10px] text-pit-400 uppercase tracking-wider">latenza BLE</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -299,7 +308,7 @@ export default function Home() {
                 {
                   n: '01',
                   title: 'Monta LapCoach',
-                  body: 'Fissa il device sul manubrio o sul codone. Morsetto universale incluso. Nessun cablaggio, nessuna configurazione hardware.',
+                  body: 'Fissa il device sul manubrio o sul codone con velcro o fascette. Nessun cablaggio, nessuna configurazione hardware.',
                   note: '< 2 min setup',
                 },
                 {
@@ -368,8 +377,8 @@ export default function Home() {
               <span className="text-lap">iOS & Android</span>
             </h2>
             <p className="text-data/80 text-sm max-w-md mx-auto mb-10">
-              Scarica l&apos;app gratuitamente. Funziona con il device LapCoach via BLE
-              oppure con il GPS del telefono in modalità standalone.
+              Scarica l&apos;app gratuitamente. Funziona subito con il GPS del telefono.
+              Abbinala al device LapCoach per prestazioni professionali.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -378,6 +387,54 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* ══════════════════════ FAQ ══════════════════════ */}
+        <section className="py-24 bg-pit-900 border-t border-pit-600">
+          <div className="max-w-3xl mx-auto px-5">
+            <div className="mb-14">
+              <p className="section-label mb-3">FAQ</p>
+              <h2
+                className="font-display font-black uppercase text-white"
+                style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1 }}
+              >
+                Domande frequenti
+              </h2>
+            </div>
+
+            <div>
+              {[
+                {
+                  q: 'Ho bisogno del device per usare l\'app?',
+                  a: 'No. L\'app funziona con il GPS integrato del tuo telefono. Il device LapCoach migliora significativamente la precisione portando la frequenza GPS da ~1Hz a 20Hz — la differenza tra ~5m e meno di 1m di accuratezza posizionale.',
+                },
+                {
+                  q: 'Quali auto e moto da pista sono supportate?',
+                  a: 'LapCoach funziona con qualsiasi veicolo. Non richiede installazione elettrica — si monta con velcro o fascette in qualsiasi posizione.',
+                },
+                {
+                  q: 'Quali circuiti sono supportati?',
+                  a: 'Al lancio includiamo i principali circuiti italiani: Monza, Mugello, Imola, Misano, Vallelunga, Franciacorta, Adria. Altri circuiti vengono aggiunti con gli aggiornamenti dell\'app.',
+                },
+                {
+                  q: 'Come si aggiorna il firmware del device?',
+                  a: 'Tramite l\'app via WiFi diretto — nessun computer necessario. L\'app ti avvisa automaticamente quando è disponibile un aggiornamento.',
+                },
+                {
+                  q: 'Dove viene spedito?',
+                  a: 'Al momento spediamo in Italia. Spedizione gratuita sopra €89.',
+                },
+              ].map((item, i) => (
+                <div key={i} className={`py-6 ${i < 4 ? 'border-b border-pit-600' : ''}`}>
+                  <p className="font-display font-bold text-white text-lg mb-2">{item.q}</p>
+                  <p className="text-data/80 text-sm leading-relaxed">{item.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════ WAITLIST ══════════════════════ */}
+        <WaitlistSection />
       </main>
       <Footer />
     </>

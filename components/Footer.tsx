@@ -14,7 +14,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-data text-sm leading-relaxed max-w-xs">
-              Il sistema di cronometro GPS per track day in auto e moto. Precisione 20Hz, analisi AI.
+              Lap timer GPS per auto e moto da pista. App gratuita, device opzionale per GPS 20Hz professionale.
             </p>
           </div>
 
@@ -47,7 +47,7 @@ export default function Footer() {
               {[
                 ['GPS', '20 Hz · u-blox M10'],
                 ['Connettività', 'Bluetooth Low Energy'],
-                ['Prezzo', '€69 — app gratuita'],
+                ['Prezzo', '€89 — app gratuita'],
               ].map(([k, v]) => (
                 <li key={k} className="flex gap-2">
                   <span className="text-pit-400 w-24 shrink-0">{k}</span>
@@ -63,8 +63,8 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-pit-400">
           <p>© {new Date().getFullYear()} LapCoach. Tutti i diritti riservati.</p>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-data transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-data transition-colors">Termini</Link>
+            <Link href="/privacy" className="hover:text-data transition-colors">Privacy</Link>
+            <Link href="/termini" className="hover:text-data transition-colors">Termini</Link>
           </div>
         </div>
       </div>

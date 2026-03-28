@@ -60,7 +60,7 @@ export default function Navbar() {
           href="/shop"
           className="btn-amber text-xs"
         >
-          Acquista — €69
+          Acquista — €89
         </Link>
       </nav>
     </header>

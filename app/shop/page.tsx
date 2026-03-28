@@ -13,7 +13,7 @@ const specs = [
   ['Connettività', 'Bluetooth Low Energy'],
   ['Ricarica', 'USB-C · carica completa 2h'],
   ['Peso', '62g con staffa'],
-  ['Montaggio', 'Morsetto universale Ø22-32mm'],
+  ['Montaggio', 'Velcro / fascette — nessun cablaggio'],
   ['App', 'iOS 15+ · Android 10+ · gratuita'],
   ['Garanzia', '12 mesi · supporto incluso'],
 ]
@@ -116,7 +116,7 @@ export default function ShopPage() {
 
               {/* Price */}
               <div className="flex items-baseline gap-3 mb-6">
-                <span className="font-display font-black text-5xl text-amber">€69</span>
+                <span className="font-display font-black text-5xl text-amber">€89</span>
                 <span className="text-data text-sm">IVA inclusa · spedizione gratuita</span>
               </div>
 
@@ -243,7 +243,7 @@ export default function ShopPage() {
                   <div className="bg-pit-700 p-4 border border-pit-600">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm text-data">LapCoach One Device</span>
-                      <span className="text-sm text-white font-display font-bold">€69,00</span>
+                      <span className="text-sm text-white font-display font-bold">€89,00</span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm text-data">Spedizione</span>
@@ -252,7 +252,7 @@ export default function ShopPage() {
                     <div className="hr-pit my-2" />
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-display font-bold text-white uppercase">Totale</span>
-                      <span className="text-xl font-display font-black text-amber">€69,00</span>
+                      <span className="text-xl font-display font-black text-amber">€89,00</span>
                     </div>
                   </div>
 

@@ -19,7 +19,7 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: 'LapCoach — Il tuo coach in pista',
   description:
-    'GPS lap timer ad alta precisione per auto e moto da pista. 20Hz di frequenza, analisi AI. Dispositivo hardware + app gratuita per iOS e Android.',
+    'App gratuita per cronometrare i tuoi giri in pista su auto e moto. GPS 20Hz con il device opzionale LapCoach, o standalone con il GPS del telefono. iOS e Android.',
   keywords: ['lap timer', 'pista', 'GPS', 'tempi sul giro', 'track day', 'moto', 'auto'],
   openGraph: {
     title: 'LapCoach — Il tuo coach in pista',

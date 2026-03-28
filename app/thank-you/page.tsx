@@ -41,7 +41,7 @@ export default function ThankYouPage() {
               </div>
               <div className="spec-row">
                 <span className="text-data text-sm">Totale</span>
-                <span className="text-amber text-sm font-display font-bold">€69,00</span>
+                <span className="text-amber text-sm font-display font-bold">€89,00</span>
               </div>
               <div className="spec-row">
                 <span className="text-data text-sm">Spedizione</span>

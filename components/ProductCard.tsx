@@ -29,7 +29,7 @@ export default function ProductCard() {
             </h3>
           </div>
           <div className="text-right">
-            <p className="font-display font-black text-4xl text-amber">€69</p>
+            <p className="font-display font-black text-4xl text-amber">€89</p>
             <p className="text-data text-xs">IVA inclusa</p>
           </div>
         </div>
