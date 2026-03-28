@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 const links = [
   { href: '/app', label: "L'App" },
-  { href: '/shop', label: 'Shop' },
+  { href: '/shop', label: 'Beta Access' },
   { href: '/#come-funziona', label: 'Come funziona' },
 ]
 
@@ -60,7 +60,7 @@ export default function Navbar() {
           href="/shop"
           className="btn-amber text-xs"
         >
-          Acquista — €89
+          Accesso beta
         </Link>
       </nav>
     </header>

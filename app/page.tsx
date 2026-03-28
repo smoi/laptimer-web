@@ -37,9 +37,19 @@ export default function Home() {
 
               {/* Left — copy */}
               <div>
+                {/* Beta badge */}
+                <div
+                  className="inline-flex items-center gap-2 bg-amber/10 border border-amber/30 px-3 py-1 mb-4 animate-fade-up opacity-0"
+                  style={{ animationFillMode: 'forwards' }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse-dot" />
+                  <span className="text-amber text-xs font-display font-bold uppercase tracking-widest">
+                    Beta privata — posti limitati
+                  </span>
+                </div>
                 <p
                   className="section-label mb-4 animate-fade-up opacity-0"
-                  style={{ animationFillMode: 'forwards' }}
+                  style={{ animationFillMode: 'forwards', animationDelay: '50ms' }}
                 >
                   GPS Lap Timer per Auto e Moto da Pista
                 </p>
@@ -107,8 +117,8 @@ export default function Home() {
                   <a href="#download" className="btn-amber">
                     Scarica l&apos;app — Gratis
                   </a>
-                  <a href="#shop" className="btn-outline">
-                    Acquista il device — €89
+                  <a href="/shop" className="btn-outline">
+                    Richiedi accesso beta
                   </a>
                 </div>
               </div>
@@ -349,13 +359,16 @@ export default function Home() {
         <section id="shop" className="py-24 bg-pit-900">
           <div className="max-w-6xl mx-auto px-5">
             <div className="mb-16">
-              <p className="section-label mb-3">Acquista</p>
+              <p className="section-label mb-3">Il device</p>
               <h2
                 className="font-display font-black uppercase text-white"
                 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1 }}
               >
-                Inizia oggi
+                LapCoach One
               </h2>
+              <p className="text-data/70 text-sm mt-3 max-w-md">
+                GPS 20Hz professionale. In beta privata — accesso su invito per i primi track day enthusiast.
+              </p>
             </div>
 
             <div className="flex justify-center">
@@ -404,6 +417,10 @@ export default function Home() {
             <div>
               {[
                 {
+                  q: 'Come funziona l\'accesso beta?',
+                  a: 'Compila il form di richiesta. Valutiamo ogni candidatura in base al profilo di utilizzo e contatteremo i selezionati entro 48 ore. I beta tester ricevono il device a prezzo speciale in cambio di feedback strutturato.',
+                },
+                {
                   q: 'Ho bisogno del device per usare l\'app?',
                   a: 'No. L\'app funziona con il GPS integrato del tuo telefono. Il device LapCoach migliora significativamente la precisione portando la frequenza GPS da ~1Hz a 20Hz — la differenza tra ~5m e meno di 1m di accuratezza posizionale.',
                 },
@@ -423,8 +440,8 @@ export default function Home() {
                   q: 'Dove viene spedito?',
                   a: 'Al momento spediamo in Italia. Spedizione gratuita sopra €89.',
                 },
-              ].map((item, i) => (
-                <div key={i} className={`py-6 ${i < 4 ? 'border-b border-pit-600' : ''}`}>
+              ].map((item, i, arr) => (
+                <div key={i} className={`py-6 ${i < arr.length - 1 ? 'border-b border-pit-600' : ''}`}>
                   <p className="font-display font-bold text-white text-lg mb-2">{item.q}</p>
                   <p className="text-data/80 text-sm leading-relaxed">{item.a}</p>
                 </div>

@@ -24,7 +24,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {[
                 { href: '/app', label: "L'App" },
-                { href: '/shop', label: 'Acquista il device' },
+                { href: '/shop', label: 'Accesso beta' },
                 { href: '/#funzionalita', label: 'Funzionalità' },
                 { href: '/#come-funziona', label: 'Come funziona' },
               ].map((l) => (

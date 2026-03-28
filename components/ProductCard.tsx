@@ -10,6 +10,8 @@ const specs = [
   'Rilevamento automatico circuito',
 ]
 
+// Beta framing — swap href and label back to "Acquista ora" + /shop when going live
+
 export default function ProductCard() {
   return (
     <div className="relative border border-pit-500 bg-pit-800 max-w-md w-full overflow-hidden">
@@ -37,7 +39,7 @@ export default function ProductCard() {
           </div>
           <div className="text-right">
             <p className="font-display font-black text-4xl text-amber">€89</p>
-            <p className="text-data text-xs">IVA inclusa</p>
+            <p className="text-data text-xs">Disponibile su invito</p>
           </div>
         </div>
 
@@ -51,11 +53,11 @@ export default function ProductCard() {
         </ul>
 
         <Link href="/shop" className="btn-amber block text-center w-full text-sm">
-          Acquista ora
+          Richiedi accesso beta
         </Link>
 
         <p className="text-center text-xs text-pit-400 mt-3">
-          Spedizione gratuita in Italia · Pagamento sicuro
+          Il device è in beta privata. L&apos;app è gratuita e funziona subito con il GPS del telefono.
         </p>
       </div>
     </div>
