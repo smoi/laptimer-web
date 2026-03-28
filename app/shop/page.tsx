@@ -1,12 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Check, Lock, Truck, ShieldCheck } from 'lucide-react'
-import { loadStripe } from '@stripe/stripe-js'
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
 const specs = [
   ['GPS', 'u-blox M10 · 20Hz · L1 C/A'],
@@ -104,14 +102,14 @@ export default function ShopPage() {
             {/* Left — product info */}
             <div>
               {/* Device visual */}
-              <div className="bg-pit-800 border border-pit-600 h-64 flex items-center justify-center mb-6 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-20"
-                  style={{
-                    backgroundImage: 'radial-gradient(circle, #1e2b1e 1px, transparent 1px)',
-                    backgroundSize: '20px 20px',
-                  }}
+              <div className="bg-pit-900 border border-pit-600 h-64 mb-6 relative overflow-hidden">
+                <Image
+                  src="/device.png"
+                  alt="LapCoach One device"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <DeviceSVGLarge />
               </div>
 
               {/* Price */}
@@ -326,21 +324,3 @@ function fieldLabel(key: keyof FormData): string {
   return labels[key]
 }
 
-function DeviceSVGLarge() {
-  return (
-    <svg width="240" height="150" viewBox="0 0 240 150" fill="none" aria-label="LapCoach device">
-      <rect x="40" y="25" width="160" height="100" rx="14" fill="#1e2b1e" stroke="#3d5a3d" strokeWidth="1.5"/>
-      <rect x="56" y="38" width="128" height="72" rx="6" fill="#080d08" stroke="#2a3d2a" strokeWidth="1"/>
-      <text x="120" y="78" textAnchor="middle" fontFamily="monospace" fontSize="22" fontWeight="900" fill="#4ade80">
-        1:23.456
-      </text>
-      <text x="120" y="96" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="#7aae8a" letterSpacing="2">
-        LAP 3 · BEST LAP
-      </text>
-      <circle cx="174" cy="44" r="4" fill="#4ade80" opacity="0.9"/>
-      <circle cx="28" cy="75" r="8" fill="none" stroke="#2a3d2a" strokeWidth="1.5"/>
-      <circle cx="212" cy="75" r="8" fill="none" stroke="#2a3d2a" strokeWidth="1.5"/>
-      <rect x="108" y="128" width="24" height="7" rx="2" fill="#1e2b1e" stroke="#2a3d2a" strokeWidth="1"/>
-    </svg>
-  )
-}
