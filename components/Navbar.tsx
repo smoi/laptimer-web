@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 const links = [
   { href: '/app', label: "L'App" },
@@ -30,11 +31,15 @@ export default function Navbar() {
     >
       <nav className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="w-2 h-2 rounded-full bg-lap animate-pulse-dot" />
-          <span className="font-display font-black text-xl tracking-tight text-white uppercase">
-            Lap<span className="text-amber">Coach</span>
-          </span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="LapCoach"
+            width={240}
+            height={116}
+            className="h-20 w-auto"
+            priority
+          />
         </Link>
 
         {/* Desktop links */}

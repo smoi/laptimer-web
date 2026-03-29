@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Footer() {
@@ -7,12 +8,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-2 h-2 rounded-full bg-lap" />
-              <span className="font-display font-black text-lg tracking-tight text-white uppercase">
-                Lap<span className="text-amber">Coach</span>
-              </span>
-            </div>
+            <Link href="/" className="inline-block mb-3">
+              <Image
+                src="/logo.png"
+                alt="LapCoach"
+                width={130}
+                height={63}
+                className="h-10 w-auto"
+              />
+            </Link>
             <p className="text-data text-sm leading-relaxed max-w-xs">
               Lap timer GPS per auto e moto da pista. App gratuita, device opzionale per GPS 20Hz professionale.
             </p>
