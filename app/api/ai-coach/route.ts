@@ -130,7 +130,7 @@ Massimo 3 aree, in ordine di impatto sul tempo. Sii specifico e concreto — no 
 ## Piano per la prossima sessione
 2-3 obiettivi concreti e misurabili da portare in pista. Es. "Ritarda il punto di frenata alla curva X di 10 metri".
 
-Rispondi esclusivamente in Markdown.`
+Rispondi esclusivamente in Markdown e quando usi i tempi, fai attenzione se ha senso usare i valori in ms o in secondi o minuti.`
 }
 
 function lapPrompt(vehicle?: string): string {
@@ -154,7 +154,7 @@ I tre interventi con maggior impatto sul tempo, in ordine di priorità. Sii chir
 ## Focus per il prossimo giro
 Un solo obiettivo da portare in pista nel giro successivo. Uno solo — la semplicità aiuta la concentrazione in guida.
 
-Rispondi esclusivamente in Markdown.`
+Rispondi esclusivamente in Markdown e quando usi i tempi, fai attenzione se ha senso usare i valori in ms o in secondi o minuti.`
 }
 
 // ─── Provider implementations ──────────────────────────────────────────────
