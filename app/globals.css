@@ -11,6 +11,25 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── iubenda: forza il banner cookie sempre in basso ──────────────────────
+   Il reset CSS di Tailwind impedisce all'overlay iubenda di espandersi
+   a tutta l'altezza viewport (top:0 → bottom:0), facendolo ricomparire
+   in alto dopo la navigazione SPA. L'override bypassa il problema
+   collassando l'overlay alla sola altezza del banner e fissandolo in basso.
+   ──────────────────────────────────────────────────────────────────────── */
+#iubenda-cs-banner {
+  top: auto !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: auto !important;
+  min-height: unset !important;
+  align-items: flex-end !important;
+  /* blocca eventuali animazioni di entrata dall'alto */
+  animation-name: none !important;
+  transform: none !important;
+}
+
 body {
   background-color: #080d08;
   color: #e8f0e8;
