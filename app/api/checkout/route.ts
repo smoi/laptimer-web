@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
                 sku: 'LAPCOACH-ONE-V1',
               },
             },
-            unit_amount: 6900, // €69.00 in cents
+            unit_amount: 5900, // €69.00 in cents
           },
           quantity: 1,
         },

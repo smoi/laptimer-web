@@ -63,18 +63,20 @@ export default function BetaAccessPage() {
     setError(null)
 
     try {
-      // TODO: connect to real backend (Resend / Airtable / etc.)
-      await fetch('/api/beta-request', {
+      const res = await fetch('/api/beta-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
-      }).catch(() => {
-        // Silently ignore — endpoint not yet wired up, form still shows success
       })
 
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error ?? 'Errore nell\'invio.')
+      }
+
       setSubmitted(true)
-    } catch {
-      setError('Errore nell\'invio. Riprova o scrivi a info@lapcoach.it.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Errore nell\'invio. Riprova o scrivi a support@lapcoach.racing.')
     } finally {
       setLoading(false)
     }
@@ -125,7 +127,7 @@ export default function BetaAccessPage() {
 
               {/* Price + status */}
               <div className="flex items-baseline gap-3 mb-2">
-                <span className="font-display font-black text-5xl text-amber">€89</span>
+                <span className="font-display font-black text-5xl text-amber">€59</span>
                 <span className="text-data text-sm">IVA inclusa · spedizione gratuita</span>
               </div>
               <p className="text-xs text-pit-400 mb-6 font-display uppercase tracking-wider">

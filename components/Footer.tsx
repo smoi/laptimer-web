@@ -51,7 +51,7 @@ export default function Footer() {
               {[
                 ['GPS', '20 Hz · u-blox M10'],
                 ['Connettività', 'Bluetooth Low Energy'],
-                ['Prezzo', '€89 — app gratuita'],
+                ['Prezzo', '€59 — app gratuita'],
               ].map(([k, v]) => (
                 <li key={k} className="flex gap-2">
                   <span className="text-pit-400 w-24 shrink-0">{k}</span>

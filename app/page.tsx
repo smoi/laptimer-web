@@ -1,9 +1,9 @@
-import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import Navbar from '@/components/Navbar'
 import ProductCard from '@/components/ProductCard'
 import TimerDisplay from '@/components/TimerDisplay'
 import WaitlistSection from '@/components/WaitlistSection'
-import { Satellite, Bluetooth, Brain, ChevronRight, Smartphone, Apple } from 'lucide-react'
+import { Apple, Bluetooth, Brain, ChevronRight, Satellite, Smartphone } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -98,7 +98,7 @@ export default function Home() {
                         ['GPS',       'Telefono ~1Hz', '20Hz dedicato'],
                         ['Precisione','~5m',           '<1m'],
                         ['Batteria',  'Telefono',      'Autonoma'],
-                        ['Prezzo',    'Gratis',        '€89'],
+                        ['Prezzo',    'Gratis',        '€59'],
                       ].map(([label, free, paid], i) => (
                         <tr key={label} className={`${i < 3 ? 'border-b border-pit-700/50' : ''}`}>
                           <td className="py-2 text-pit-400 font-display text-xs uppercase tracking-wider">{label}</td>
@@ -169,7 +169,7 @@ export default function Home() {
               {[
                 ['20 Hz', 'GPS del device'],
                 ['Bluetooth', 'connessione stabile'],
-                ['€89', 'device opzionale'],
+                ['€59', 'device opzionale'],
                 ['Free', 'app iOS & Android'],
               ].map(([val, label]) => (
                 <div key={val} className="flex items-center gap-3 px-4 border-l border-pit-600 first:border-l-0">
@@ -282,9 +282,9 @@ export default function Home() {
                     Esempio analisi AI
                   </p>
                   {[
-                    { sector: 'T1–T3', delta: '-0.3s', note: 'Frenata migliorabile' },
-                    { sector: 'T4–T6', delta: '+0.1s', note: 'Traiettoria ottimale' },
-                    { sector: 'T7–T9', delta: '-0.5s', note: 'Punto di corda da anticipare' },
+                    { sector: 'Lesmo 1', delta: '-0.3s', note: 'Frenata migliorabile' },
+                    { sector: 'Parabolica', delta: '+0.1s', note: 'Traiettoria ottimale' },
+                    { sector: 'Ascari', delta: '-0.5s', note: 'Punto di corda da anticipare' },
                   ].map((item) => (
                     <div key={item.sector} className="spec-row">
                       <span className="font-display font-bold text-white">{item.sector}</span>
@@ -430,7 +430,7 @@ export default function Home() {
                 },
                 {
                   q: 'Quali circuiti sono supportati?',
-                  a: 'Al lancio includiamo i principali circuiti italiani: Monza, Mugello, Imola, Misano, Vallelunga, Franciacorta, Adria. Altri circuiti vengono aggiunti con gli aggiornamenti dell\'app.',
+                  a: 'Al lancio includiamo i principali circuiti mondiali: Monza, Mugello, Imola, Misano, Vallelunga, Franciacorta, Adria. Altri circuiti vengono aggiunti con gli aggiornamenti dell\'app. Ma se mancano dei circuiti potrai aggiungerli tu manualmente tramite l\'app.',
                 },
                 {
                   q: 'Come si aggiorna il firmware del device?',
@@ -438,7 +438,7 @@ export default function Home() {
                 },
                 {
                   q: 'Dove viene spedito?',
-                  a: 'Al momento spediamo in Italia. Spedizione gratuita sopra €89.',
+                  a: 'Al momento spediamo in Italia. Spedizione gratuita sopra €59.',
                 },
               ].map((item, i, arr) => (
                 <div key={i} className={`py-6 ${i < arr.length - 1 ? 'border-b border-pit-600' : ''}`}>
