@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Barlow_Condensed, DM_Sans } from 'next/font/google'
 import Script from 'next/script'
+import IubendaLoader from '@/components/IubendaLoader'
 import './globals.css'
 
 const barlowCondensed = Barlow_Condensed({
@@ -54,16 +55,8 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* iubenda — cookie banner */}
-        <Script
-          src="https://embeds.iubenda.com/widgets/07ce5aa9-11f5-4d4c-8075-184fd806e198.js"
-          strategy="afterInteractive"
-        />
-        {/* iubenda — privacy/cookie policy button renderer */}
-        <Script
-          src="https://cdn.iubenda.com/iubenda.js"
-          strategy="afterInteractive"
-        />
+        {/* iubenda — caricato una volta sola, non si reinizializza a ogni navigazione */}
+        <IubendaLoader />
       </body>
     </html>    
   )
