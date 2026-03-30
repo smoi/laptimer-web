@@ -1,7 +1,7 @@
-import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import Navbar from '@/components/Navbar'
 import PhoneMockup from '@/components/PhoneMockup'
-import { Timer, TrendingUp, Gauge, Brain, Bluetooth, MapPin, Apple, Smartphone } from 'lucide-react'
+import { Apple, Bluetooth, Brain, Gauge, MapPin, Smartphone, Timer, TrendingUp } from 'lucide-react'
 
 const features = [
   {
@@ -37,10 +37,12 @@ const features = [
 ]
 
 const screenshots = [
-  { src: '/screenshots/screen-home.png',      label: 'Home' },
-  { src: '/screenshots/screen-sessioni.png',  label: 'Sessioni' },
   { src: '/screenshots/screen-timing.png',    label: 'In pista' },
+  { src: '/screenshots/screen-sessione.png',  label: 'Sessione' }, 
+  { src: '/screenshots/screen-giro.png',      label: 'Dettaglio Giro' },   
+  { src: '/screenshots/screen-sessioni.png',  label: 'Sessioni' },  
   { src: '/screenshots/screen-circuiti.png',  label: 'Circuiti' },
+  { src: '/screenshots/screen-home.png',      label: 'Home' },
 ]
 
 export default function AppPage() {

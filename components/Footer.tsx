@@ -66,9 +66,26 @@ export default function Footer() {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-pit-400">
           <p>© {new Date().getFullYear()} LapCoach. Tutti i diritti riservati.</p>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-data transition-colors">Privacy</Link>
-            <Link href="/termini" className="hover:text-data transition-colors">Termini</Link>
+          <div className="flex flex-wrap gap-4 items-center">
+            <Link href="/termini" className="hover:text-data transition-colors">
+              Termini e Condizioni
+            </Link>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a
+              href="https://www.iubenda.com/privacy-policy/98995300"
+              className="iubenda-black iubenda-noiframe iubenda-embed"
+              title="Privacy Policy"
+            >
+              Privacy Policy
+            </a>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a
+              href="https://www.iubenda.com/privacy-policy/98995300/cookie-policy"
+              className="iubenda-black iubenda-noiframe iubenda-embed"
+              title="Cookie Policy"
+            >
+              Cookie Policy
+            </a>
           </div>
         </div>
       </div>

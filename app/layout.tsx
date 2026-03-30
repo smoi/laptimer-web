@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Barlow_Condensed, DM_Sans } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const barlowCondensed = Barlow_Condensed({
@@ -36,7 +37,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="it" className={`${barlowCondensed.variable} ${dmSans.variable}`}>
-      <body className="font-body antialiased">{children}</body>
-    </html>
+      <body className="font-body antialiased">
+        {children}
+        {/* iubenda — cookie banner */}
+        <Script
+          src="https://embeds.iubenda.com/widgets/07ce5aa9-11f5-4d4c-8075-184fd806e198.js"
+          strategy="afterInteractive"
+        />
+        {/* iubenda — privacy/cookie policy button renderer */}
+        <Script
+          src="https://cdn.iubenda.com/iubenda.js"
+          strategy="afterInteractive"
+        />
+      </body>
+    </html>    
   )
 }
