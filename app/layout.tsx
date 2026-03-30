@@ -39,6 +39,21 @@ export default function RootLayout({
     <html lang="it" className={`${barlowCondensed.variable} ${dmSans.variable}`}>
       <body className="font-body antialiased">
         {children}
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-R4J5L2JF4G"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-R4J5L2JF4G');
+          `}
+        </Script>
+
         {/* iubenda — cookie banner */}
         <Script
           src="https://embeds.iubenda.com/widgets/07ce5aa9-11f5-4d4c-8075-184fd806e198.js"
