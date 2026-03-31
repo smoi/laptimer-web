@@ -123,34 +123,32 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Right — live timer */}
+              {/* Right — iPhone mockup with app GIF */}
               <div
                 className="flex flex-col items-center lg:items-end gap-4 animate-fade-up opacity-0 delay-300"
                 style={{ animationFillMode: 'forwards' }}
               >
-                {/* Timer card */}
-                <div className="border border-pit-500 bg-pit-800/80 p-8 w-full max-w-sm backdrop-blur-sm">
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="w-2 h-2 rounded-full bg-lap animate-pulse-dot" />
-                    <span className="text-xs font-display font-bold uppercase tracking-widest text-data">
-                      Live · Giro 3
-                    </span>
+                {/* iPhone mockup */}
+                <div className="relative mx-auto" style={{ width: 260 }}>
+                  {/* Phone shell */}
+                  <div className="relative rounded-[44px] border-[8px] border-pit-500 bg-black shadow-2xl overflow-hidden"
+                    style={{ aspectRatio: '9/19.5' }}>
+                    {/* Dynamic island */}
+                    <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-7 bg-black rounded-full z-10" />
+                    {/* Screen — GIF */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/screen-timer.gif"
+                      alt="LapCoach app in pista"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  <TimerDisplay />
-                  <div className="mt-4 pt-4 border-t border-pit-600 grid grid-cols-3 gap-3">
-                    {[
-                      ['Best', '1:23.456'],
-                      ['Speed', '187 km/h'],
-                      ['GPS', '20 sats'],
-                    ].map(([label, val]) => (
-                      <div key={label}>
-                        <p className="text-[10px] text-pit-400 uppercase tracking-wider font-display">{label}</p>
-                        <p className="text-sm font-display font-bold text-white mt-0.5">{val}</p>
-                      </div>
-                    ))}
-                  </div>
+                  {/* Side buttons */}
+                  <div className="absolute -left-[10px] top-20 w-[4px] h-8 rounded-l-sm bg-pit-500" />
+                  <div className="absolute -left-[10px] top-32 w-[4px] h-10 rounded-l-sm bg-pit-500" />
+                  <div className="absolute -left-[10px] top-44 w-[4px] h-10 rounded-l-sm bg-pit-500" />
+                  <div className="absolute -right-[10px] top-28 w-[4px] h-14 rounded-r-sm bg-pit-500" />
                 </div>
-                <p className="text-xs text-pit-400 text-center">Simulazione in tempo reale</p>
               </div>
             </div>
           </div>
