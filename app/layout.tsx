@@ -4,6 +4,7 @@ import Script from 'next/script'
 import IubendaLoader from '@/components/IubendaLoader'
 import './globals.css'
 
+
 const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800', '900'],
@@ -55,7 +56,16 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* iubenda — caricato una volta sola, non si reinizializza a ogni navigazione */}
+        {/* iubenda — script in fondo al body */}
+        <Script
+          src="https://embeds.iubenda.com/widgets/07ce5aa9-11f5-4d4c-8075-184fd806e198.js"
+          strategy="afterInteractive"
+        />
+        <Script
+          src="https://cdn.iubenda.com/iubenda.js"
+          strategy="afterInteractive"
+        />
+        {/* iubenda — corregge posizione banner dopo navigazione SPA */}
         <IubendaLoader />
       </body>
     </html>    

@@ -2,26 +2,28 @@
 
 import { useEffect } from 'react'
 
-// Carica gli script iubenda una volta sola per sessione.
-// useEffect con [] non ri-esegue mai ad ogni navigazione client-side Next.js,
-// a differenza di next/script strategy="afterInteractive" nel layout.
+function moveWidgetToFooter() {
+  const widget = document.querySelector('.iub__us-widget')
+  const footer = document.getElementById('site-footer')
+  if (!widget || !footer) return
+  // Already inside footer — nothing to do
+  if (footer.contains(widget)) return
+  footer.prepend(widget)
+}
+
 export default function IubendaLoader() {
   useEffect(() => {
-    // Guard: se gli script sono già nel DOM non fare nulla
-    if (document.querySelector('script[src*="embeds.iubenda.com"]')) return
+    // Move widget immediately if already in DOM
+    moveWidgetToFooter()
 
-    // Script principale: cookie banner + preference widget
-    const banner = document.createElement('script')
-    banner.src = 'https://embeds.iubenda.com/widgets/07ce5aa9-11f5-4d4c-8075-184fd806e198.js'
-    banner.async = true
-    document.head.appendChild(banner)
+    // Watch for iubenda inserting the widget after SPA navigation
+    const observer = new MutationObserver(() => {
+      moveWidgetToFooter()
+    })
+    observer.observe(document.body, { childList: true, subtree: false })
 
-    // Script badge: stila i link Privacy Policy / Cookie Policy nel footer
-    const badges = document.createElement('script')
-    badges.src = 'https://cdn.iubenda.com/iubenda.js'
-    badges.async = true
-    document.body.appendChild(badges)
-  }, []) // [] = mai ri-eseguito su navigazione
+    return () => observer.disconnect()
+  }, [])
 
   return null
 }

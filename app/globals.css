@@ -30,6 +30,49 @@ html {
   transform: none !important;
 }
 
+/* ── iubenda: widget "Informativa sulla raccolta" nel footer ──────────────
+   Iubenda inserisce .iub__us-widget come figlio diretto di <body>.
+   IubendaLoader.tsx lo sposta dentro #site-footer via MutationObserver.
+   Qui lo resettiamo visivamente in modo che si integri con il footer scuro.
+   ──────────────────────────────────────────────────────────────────────── */
+.iub__us-widget {
+  position: static !important;
+  background: transparent !important;
+  padding: 0.5rem 1.25rem !important;
+  width: 100% !important;
+  border-bottom: 1px solid #2a3d2a;
+}
+
+.iub__us-widget .iub__us-widget__wrapper {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  justify-content: center !important;
+  gap: 1.5rem !important;
+  flex-wrap: wrap !important;
+  padding: 0 !important;
+}
+
+.iub__us-widget a,
+.iub__us-widget span,
+.iub__us-widget label,
+.iub__us-widget p {
+  color: #6b7d6b !important;
+  font-size: 0.75rem !important;
+  text-decoration: none !important;
+  background: transparent !important;
+}
+
+.iub__us-widget a:hover {
+  color: #e8f0e8 !important;
+}
+
+/* toggle/switch iubenda */
+.iub__us-widget input[type="checkbox"] {
+  accent-color: #F59E0B;
+}
+
 body {
   background-color: #080d08;
   color: #e8f0e8;
