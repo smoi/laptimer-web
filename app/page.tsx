@@ -135,13 +135,19 @@ export default function Home() {
                     style={{ aspectRatio: '9/19.5' }}>
                     {/* Dynamic island */}
                     <div className="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-7 bg-black rounded-full z-10" />
-                    {/* Screen — GIF */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/screen-timer.gif"
-                      alt="LapCoach app in pista"
+                    {/* Screen — video (no LCP penalty, no alt needed) */}
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      disablePictureInPicture
+                      preload="none"
+                      aria-hidden="true"
                       className="w-full h-full object-cover"
-                    />
+                    >
+                      <source src="/screen-timer.mp4" type="video/mp4" />
+                    </video>
                   </div>
                   {/* Side buttons */}
                   <div className="absolute -left-[10px] top-20 w-[4px] h-8 rounded-l-sm bg-pit-500" />

@@ -39,6 +39,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="it" className={`${barlowCondensed.variable} ${dmSans.variable}`}>
+      <head>
+        <link rel="preload" href="/screen-timer.mp4" as="video" type="video/mp4" />
+      </head>
       <body className="font-body antialiased">
         {children}
 
