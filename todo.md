@@ -1,0 +1,1 @@
+aggiungere mappa con i circuiti
