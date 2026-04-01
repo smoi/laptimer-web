@@ -1,25 +1,32 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
-const links = [
-  { href: '/app', label: "L'App" },
-  { href: '/shop', label: 'Beta Access' },
-  { href: '/#come-funziona', label: 'Come funziona' },
-]
+import { useTranslations, useLocale } from 'next-intl'
+import { Link, usePathname, useRouter } from '@/i18n/navigation'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const t = useTranslations('navbar')
+  const locale = useLocale()
   const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  const links = [
+    { href: '/app' as const, label: t('app') },
+    { href: '/shop' as const, label: t('betaAccess') },
+    { href: '/#come-funziona' as const, label: t('howItWorks') },
+  ]
+
+  const switchLocale = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale })
+  }
 
   return (
     <header
@@ -60,13 +67,33 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA */}
-        <Link
-          href="/shop"
-          className="btn-amber text-xs"
-        >
-          Accesso beta
-        </Link>
+        <div className="flex items-center gap-3">
+          {/* Locale switcher */}
+          <div className="hidden md:flex items-center gap-1 text-xs font-display uppercase tracking-widest">
+            <button
+              onClick={() => switchLocale('it')}
+              className={`px-1.5 py-0.5 transition-colors ${
+                locale === 'it' ? 'text-amber' : 'text-pit-400 hover:text-data'
+              }`}
+            >
+              IT
+            </button>
+            <span className="text-pit-600">|</span>
+            <button
+              onClick={() => switchLocale('en')}
+              className={`px-1.5 py-0.5 transition-colors ${
+                locale === 'en' ? 'text-amber' : 'text-pit-400 hover:text-data'
+              }`}
+            >
+              EN
+            </button>
+          </div>
+
+          {/* CTA */}
+          <Link href="/shop" className="btn-amber text-xs">
+            {t('cta')}
+          </Link>
+        </div>
       </nav>
     </header>
   )

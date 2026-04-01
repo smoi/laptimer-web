@@ -1,0 +1,300 @@
+{
+  "metadata": {
+    "home": {
+      "title": "LapCoach — Il tuo coach in pista",
+      "description": "App gratuita per cronometrare i tuoi giri in pista su auto e moto. GPS 20Hz con il device opzionale LapCoach, o standalone con il GPS del telefono. iOS e Android."
+    },
+    "app": {
+      "title": "LapCoach App — Cronometro GPS per pista",
+      "description": "App iOS e Android per lap timing professionale. GPS 20Hz, AI Coach, analisi post-sessione. Gratuita."
+    },
+    "shop": {
+      "title": "Accesso Beta — LapCoach One",
+      "description": "Richiedi l'accesso beta al device LapCoach One. GPS 20Hz professionale per track day. Posti limitati."
+    },
+    "termini": {
+      "title": "Termini e Condizioni — LapCoach"
+    }
+  },
+  "navbar": {
+    "app": "L'App",
+    "betaAccess": "Beta Access",
+    "howItWorks": "Come funziona",
+    "cta": "Accesso beta"
+  },
+  "footer": {
+    "description": "Lap timer GPS per auto e moto da pista. App gratuita, device opzionale per GPS 20Hz professionale.",
+    "product": "Prodotto",
+    "links": {
+      "app": "L'App",
+      "betaAccess": "Accesso beta",
+      "features": "Funzionalità",
+      "howItWorks": "Come funziona"
+    },
+    "specs": "Specs",
+    "specsData": {
+      "gps": "20 Hz · u-blox M10",
+      "connectivity": "Bluetooth Low Energy",
+      "price": "€59 — app gratuita"
+    },
+    "copyright": "© {year} LapCoach. Tutti i diritti riservati.",
+    "terms": "Termini e Condizioni",
+    "privacy": "Privacy Policy",
+    "cookie": "Cookie Policy"
+  },
+  "home": {
+    "hero": {
+      "badge": "Beta privata — posti limitati",
+      "label": "GPS Lap Timer per Auto e Moto da Pista",
+      "tagline": "Il tuo coach in pista",
+      "description": "App gratuita per iOS e Android. Usala subito con il GPS del tuo telefono, oppure abbinala al device LapCoach per GPS 20Hz professionale e massima precisione.",
+      "tableAppFree": "App gratuita",
+      "tableAppDevice": "App + Device",
+      "tableRows": [
+        ["GPS", "Telefono ~1Hz", "20Hz dedicato"],
+        ["Precisione", "~5m", "<1m"],
+        ["Batteria", "Telefono", "Autonoma"],
+        ["Prezzo", "Gratis", "€59"]
+      ],
+      "downloadCta": "Scarica l'app — Gratis",
+      "betaCta": "Richiedi accesso beta",
+      "scroll": "Scorri"
+    },
+    "specs": [
+      ["20 Hz", "GPS del device"],
+      ["Bluetooth", "connessione stabile"],
+      ["€59", "device opzionale"],
+      ["Free", "app iOS & Android"]
+    ],
+    "features": {
+      "label": "Funzionalità",
+      "title": "Tutto quello che serve",
+      "titleHighlight": "in pista",
+      "gps": {
+        "label": "Precisione assoluta",
+        "title": "GPS 20Hz",
+        "body": "Il modulo u-blox M10 campiona la posizione 20 volte al secondo, garantendo una risoluzione temporale di 50ms per giro — abbondantemente sufficiente per distinguere centesimi di secondo tra sessioni diverse.",
+        "stats": [
+          ["50ms", "risoluzione"],
+          ["u-blox M10", "chip GPS"],
+          ["20×", "vs GPS telefono"],
+          ["L1 C/A", "segnale"]
+        ]
+      },
+      "ble": {
+        "label": "Connessione istantanea",
+        "title": "BLE Real-Time",
+        "body": "Bluetooth Low Energy 5.0 garantisce latenza minima e una connessione stabile anche in condizioni di vibrazione. I dati GPS fluiscono verso l'app in tempo reale: velocità, posizione, tempi parziali.",
+        "latency": ["<15ms", "latenza BLE"]
+      },
+      "ai": {
+        "label": "Analisi intelligente",
+        "title": "AI Coach",
+        "body": "Al termine di ogni sessione, l'AI analizza i tuoi giri e identifica dove stai perdendo tempo: frenate tardive, traiettorie non ottimali, punti di corda sbagliati. Feedback concreto, non solo numeri.",
+        "exampleLabel": "Esempio analisi AI",
+        "sectors": [
+          { "sector": "Lesmo 1", "delta": "-0.3s", "note": "Frenata migliorabile" },
+          { "sector": "Parabolica", "delta": "+0.1s", "note": "Traiettoria ottimale" },
+          { "sector": "Ascari", "delta": "-0.5s", "note": "Punto di corda da anticipare" }
+        ]
+      }
+    },
+    "howItWorks": {
+      "label": "Processo",
+      "title": "Come funziona",
+      "steps": [
+        {
+          "n": "01",
+          "title": "Monta LapCoach",
+          "body": "Fissa il device sul manubrio o sul codone con velcro o fascette. Nessun cablaggio, nessuna configurazione hardware.",
+          "note": "< 2 min setup"
+        },
+        {
+          "n": "02",
+          "title": "Connetti via Bluetooth",
+          "body": "Apri l'app, premi connetti. Il device viene rilevato in automatico. La connessione BLE rimane stabile anche in corsa.",
+          "note": "pairing automatico"
+        },
+        {
+          "n": "03",
+          "title": "Analizza in tempo reale",
+          "body": "Durante la sessione vedi giri, velocità e parziali in diretta. Dopo la giornata, l'AI elabora i dati e ti fornisce il briefing.",
+          "note": "AI report post-sessione"
+        }
+      ]
+    },
+    "device": {
+      "label": "Il device",
+      "title": "LapCoach One",
+      "description": "GPS 20Hz professionale. In beta privata — accesso su invito per i primi track day enthusiast."
+    },
+    "download": {
+      "label": "App gratuita",
+      "title": "Disponibile su",
+      "titleHighlight": "iOS & Android",
+      "description": "Scarica l'app gratuitamente. Funziona subito con il GPS del telefono. Abbinala al device LapCoach per prestazioni professionali."
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Domande frequenti",
+      "items": [
+        {
+          "q": "Come funziona l'accesso beta?",
+          "a": "Compila il form di richiesta. Valutiamo ogni candidatura in base al profilo di utilizzo e contatteremo i selezionati entro 48 ore. I beta tester ricevono il device a prezzo speciale in cambio di feedback strutturato."
+        },
+        {
+          "q": "Ho bisogno del device per usare l'app?",
+          "a": "No. L'app funziona con il GPS integrato del tuo telefono. Il device LapCoach migliora significativamente la precisione portando la frequenza GPS da ~1Hz a 20Hz — la differenza tra ~5m e meno di 1m di accuratezza posizionale."
+        },
+        {
+          "q": "Quali auto e moto da pista sono supportate?",
+          "a": "LapCoach funziona con qualsiasi veicolo. Non richiede installazione elettrica — si monta con velcro o fascette in qualsiasi posizione."
+        },
+        {
+          "q": "Quali circuiti sono supportati?",
+          "a": "Al lancio includiamo i principali circuiti mondiali: Monza, Mugello, Imola, Misano, Vallelunga, Franciacorta, Adria. Altri circuiti vengono aggiunti con gli aggiornamenti dell'app. Ma se mancano dei circuiti potrai aggiungerli tu manualmente tramite l'app."
+        },
+        {
+          "q": "Come si aggiorna il firmware del device?",
+          "a": "Tramite l'app via WiFi diretto — nessun computer necessario. L'app ti avvisa automaticamente quando è disponibile un aggiornamento."
+        },
+        {
+          "q": "Dove viene spedito?",
+          "a": "Al momento spediamo in Italia. Spedizione gratuita sopra €59."
+        }
+      ]
+    },
+    "waitlist": {
+      "label": "Notifiche",
+      "title": "Vuoi sapere quando LapCoach è disponibile?",
+      "description": "Lascia la tua email — ti avvisiamo al lancio. Zero spam.",
+      "placeholder": "la.tua@email.com",
+      "button": "Avvisami",
+      "successTitle": "Perfetto — ti avvisiamo!",
+      "successBody": "Riceverai una email non appena LapCoach sarà disponibile."
+    }
+  },
+  "appPage": {
+    "hero": {
+      "label": "App iOS & Android",
+      "title1": "L'app che",
+      "title2": "trasforma ogni",
+      "titleHighlight": "giro",
+      "description": "Dati GPS in tempo reale, analisi AI post-sessione, cronometro al millisecondo. Funziona con il device LapCoach One via Bluetooth o in modalità standalone con il GPS del telefono."
+    },
+    "features": {
+      "label": "Cosa puoi fare",
+      "title": "Funzionalità principali",
+      "items": [
+        { "title": "Cronometro preciso", "body": "Tempi sul giro aggiornati in tempo reale a 20Hz. Risoluzione al millisecondo." },
+        { "title": "Best lap tracking", "body": "L'app confronta ogni giro con il miglior tempo della sessione e dello storico." },
+        { "title": "Velocità & dati", "body": "Velocità istantanea, massima, media. Grafico velocità sul tracciato." },
+        { "title": "AI Coach", "body": "Analisi post-sessione con identificazione automatica dei settori critici." },
+        { "title": "Sync con device BLE", "body": "Connessione automatica al LapCoach One via Bluetooth Low Energy 5.0." },
+        { "title": "Rilevamento circuito", "body": "Riconosce automaticamente il circuito al momento del lancio della sessione." }
+      ]
+    },
+    "screenshots": {
+      "label": "Schermate",
+      "title": "Progettata per la pista",
+      "description": "UI ad alto contrasto, leggibile anche con il casco abbassato e alla luce solare diretta.",
+      "labels": ["In pista", "Sessione", "Dettaglio Giro", "Sessioni", "Circuiti", "Home"]
+    },
+    "cta": {
+      "label": "Gratis",
+      "title": "Scarica ora"
+    }
+  },
+  "shopPage": {
+    "badge": "Beta privata · posti limitati",
+    "title1": "Richiedi accesso",
+    "titleHighlight": "alla beta",
+    "description": "Stiamo selezionando i primi tester tra gli appassionati di track day. Compila il form — ti contatteremo entro 48 ore.",
+    "priceLabel": "IVA inclusa · spedizione gratuita",
+    "availabilityLabel": "Disponibile su invito · Beta tester: prezzo speciale",
+    "benefitsTitle": "Cosa ottieni come beta tester",
+    "benefits": [
+      "Device LapCoach One a prezzo riservato",
+      "Accesso prioritario alle nuove funzionalità",
+      "Canale diretto con il team di sviluppo",
+      "Il tuo feedback plasma il prodotto finale"
+    ],
+    "specsTitle": "Specifiche tecniche",
+    "specs": [
+      ["GPS", "u-blox M10 · 20Hz · L1 C/A"],
+      ["Connettività", "Bluetooth Low Energy"],
+      ["Ricarica", "USB-C · carica completa 2h"],
+      ["Peso", "62g con staffa"],
+      ["Montaggio", "Velcro / fascette — nessun cablaggio"],
+      ["App", "iOS 15+ · Android 10+ · gratuita"],
+      ["Garanzia", "12 mesi · supporto incluso"]
+    ],
+    "badges": {
+      "response": "Risposta 48h",
+      "warranty": "Garanzia 12 mesi",
+      "gps": "GPS 20Hz"
+    },
+    "form": {
+      "title": "Candidatura beta",
+      "subtitle": "Valutiamo ogni candidatura in base al profilo d'utilizzo. Nessun acquisto richiesto ora.",
+      "name": "Nome e cognome",
+      "namePlaceholder": "Mario Rossi",
+      "email": "Email",
+      "emailPlaceholder": "mario@example.com",
+      "vehicleType": "Veicolo che usi in pista",
+      "vehicleTypePlaceholder": "Seleziona...",
+      "vehicleTypeCar": "Auto",
+      "vehicleTypeMoto": "Moto",
+      "vehicleTypeBoth": "Entrambi",
+      "vehicleModel": "Modello del veicolo",
+      "vehicleModelPlaceholder": "es. Porsche 911, BMW M3, Yamaha R1",
+      "circuits": "Circuiti che frequenti",
+      "circuitsPlaceholder": "es. Monza, Mugello, Misano",
+      "hasTimer": "Hai già un lap timer?",
+      "hasTimerNo": "No, mai usato",
+      "hasTimerApp": "Sì, app sul telefono",
+      "hasTimerDevice": "Sì, device dedicato — quale?",
+      "howFound": "Come hai scoperto LapCoach?",
+      "howFoundPlaceholder": "Opzionale",
+      "submit": "Invia richiesta",
+      "submitting": "Invio in corso...",
+      "disclaimer": "Nessun obbligo di acquisto · Ti risponderemo entro 48 ore",
+      "requiredError": "Il campo \"{field}\" è obbligatorio.",
+      "genericError": "Errore nell'invio. Riprova o scrivi a support@lapcoach.racing."
+    },
+    "fieldLabels": {
+      "name": "Nome e cognome",
+      "email": "Email",
+      "vehicle_type": "Veicolo che usi in pista",
+      "vehicle_model": "Modello del veicolo",
+      "circuits": "Circuiti che frequenti",
+      "has_timer": "Hai già un lap timer?",
+      "how_found": "Come hai scoperto LapCoach?"
+    },
+    "success": {
+      "title": "Richiesta ricevuta",
+      "body": "Ti contatteremo entro 48 ore all'indirizzo",
+      "appNote": "Nel frattempo, scarica l'app gratuita e inizia a usarla con il GPS del telefono — funziona subito, senza device.",
+      "appCta": "Scarica l'app — Gratis"
+    }
+  },
+  "productCard": {
+    "label": "Hardware Device",
+    "availability": "Disponibile su invito",
+    "specs": [
+      "GPS 20Hz u-blox M10",
+      "Connessione Bluetooth",
+      "App iOS & Android gratuita",
+      "Analisi AI post-sessione",
+      "Rilevamento automatico circuito"
+    ],
+    "cta": "Richiedi accesso beta",
+    "note": "Il device è in beta privata. L'app è gratuita e funziona subito con il GPS del telefono."
+  },
+  "appBadge": {
+    "appleLabel": "Download on the",
+    "appleStore": "App Store",
+    "googleLabel": "Get it on",
+    "googleStore": "Google Play"
+  }
+}

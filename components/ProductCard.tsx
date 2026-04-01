@@ -1,18 +1,12 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
+import { Link } from '@/i18n/navigation'
 import { Check } from 'lucide-react'
 
-const specs = [
-  'GPS 20Hz u-blox M10',
-  'Connessione Bluetooth',
-  'App iOS & Android gratuita',
-  'Analisi AI post-sessione',
-  'Rilevamento automatico circuito',
-]
+export default async function ProductCard() {
+  const t = await getTranslations('productCard')
+  const specs = t.raw('specs') as string[]
 
-// Beta framing — swap href and label back to "Acquista ora" + /shop when going live
-
-export default function ProductCard() {
   return (
     <div className="relative border border-pit-500 bg-pit-800 max-w-md w-full overflow-hidden">
       {/* Amber top accent */}
@@ -32,14 +26,14 @@ export default function ProductCard() {
       <div className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <p className="section-label mb-1">Hardware Device</p>
+            <p className="section-label mb-1">{t('label')}</p>
             <h3 className="font-display font-black text-2xl text-white uppercase">
               LapCoach One
             </h3>
           </div>
           <div className="text-right">
             <p className="font-display font-black text-4xl text-amber">€59</p>
-            <p className="text-data text-xs">Disponibile su invito</p>
+            <p className="text-data text-xs">{t('availability')}</p>
           </div>
         </div>
 
@@ -53,11 +47,11 @@ export default function ProductCard() {
         </ul>
 
         <Link href="/shop" className="btn-amber block text-center w-full text-sm">
-          Richiedi accesso beta
+          {t('cta')}
         </Link>
 
         <p className="text-center text-xs text-pit-400 mt-3">
-          Il device è in beta privata. L&apos;app è gratuita e funziona subito con il GPS del telefono.
+          {t('note')}
         </p>
       </div>
     </div>

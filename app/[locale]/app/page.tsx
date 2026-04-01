@@ -1,51 +1,38 @@
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import PhoneMockup from '@/components/PhoneMockup'
 import { Apple, Bluetooth, Brain, Gauge, MapPin, Smartphone, Timer, TrendingUp } from 'lucide-react'
 
-const features = [
-  {
-    icon: Timer,
-    title: 'Cronometro preciso',
-    body: 'Tempi sul giro aggiornati in tempo reale a 20Hz. Risoluzione al millisecondo.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Best lap tracking',
-    body: "L'app confronta ogni giro con il miglior tempo della sessione e dello storico.",
-  },
-  {
-    icon: Gauge,
-    title: 'Velocità & dati',
-    body: 'Velocità istantanea, massima, media. Grafico velocità sul tracciato.',
-  },
-  {
-    icon: Brain,
-    title: 'AI Coach',
-    body: 'Analisi post-sessione con identificazione automatica dei settori critici.',
-  },
-  {
-    icon: Bluetooth,
-    title: 'Sync con device BLE',
-    body: 'Connessione automatica al LapCoach One via Bluetooth Low Energy 5.0.',
-  },
-  {
-    icon: MapPin,
-    title: 'Rilevamento circuito',
-    body: 'Riconosce automaticamente il circuito al momento del lancio della sessione.',
-  },
-]
+const featureIcons = [Timer, TrendingUp, Gauge, Brain, Bluetooth, MapPin]
 
 const screenshots = [
-  { src: '/screenshots/screen-timing.png',    label: 'In pista' },
-  { src: '/screenshots/screen-sessione.png',  label: 'Sessione' }, 
-  { src: '/screenshots/screen-giro.png',      label: 'Dettaglio Giro' },   
-  { src: '/screenshots/screen-sessioni.png',  label: 'Sessioni' },  
-  { src: '/screenshots/screen-circuiti.png',  label: 'Circuiti' },
-  { src: '/screenshots/screen-home.png',      label: 'Home' },
+  { src: '/screenshots/screen-timing.png',   labelKey: 0 },
+  { src: '/screenshots/screen-sessione.png', labelKey: 1 },
+  { src: '/screenshots/screen-giro.png',     labelKey: 2 },
+  { src: '/screenshots/screen-sessioni.png', labelKey: 3 },
+  { src: '/screenshots/screen-circuiti.png', labelKey: 4 },
+  { src: '/screenshots/screen-home.png',     labelKey: 5 },
 ]
 
-export default function AppPage() {
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  const { locale } = params
+  const t = await getTranslations({ locale, namespace: 'metadata.app' })
+  return { title: t('title'), description: t('description') }
+}
+
+export default async function AppPage({ params }: { params: { locale: string } }) {
+  const t = await getTranslations('appPage')
+  const tBadge = await getTranslations('appBadge')
+
+  const features = t.raw('features.items') as { title: string; body: string }[]
+  const screenshotLabels = t.raw('screenshots.labels') as string[]
+
   return (
     <>
       <Navbar />
@@ -63,24 +50,31 @@ export default function AppPage() {
 
           <div className="relative max-w-6xl mx-auto px-5">
             <div className="max-w-2xl">
-              <p className="section-label mb-4">App iOS & Android</p>
+              <p className="section-label mb-4">{t('hero.label')}</p>
               <h1
                 className="font-display font-black uppercase text-white leading-none mb-6"
                 style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}
               >
-                L&apos;app che
+                {t('hero.title1')}
                 <br />
-                trasforma ogni
+                {t('hero.title2')}
                 <br />
-                <span className="text-amber">giro</span>
+                <span className="text-amber">{t('hero.titleHighlight')}</span>
               </h1>
               <p className="text-data/80 text-base leading-relaxed max-w-lg mb-10">
-                Dati GPS in tempo reale, analisi AI post-sessione, cronometro al millisecondo.
-                Funziona con il device LapCoach One via Bluetooth o in modalità standalone con il GPS del telefono.
+                {t('hero.description')}
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <AppBadge store="apple" />
-                <AppBadge store="google" />
+                <AppBadge
+                  store="apple"
+                  label={tBadge('appleLabel')}
+                  storeName={tBadge('appleStore')}
+                />
+                <AppBadge
+                  store="google"
+                  label={tBadge('googleLabel')}
+                  storeName={tBadge('googleStore')}
+                />
               </div>
             </div>
           </div>
@@ -90,18 +84,18 @@ export default function AppPage() {
         <section className="py-24 bg-pit-800">
           <div className="max-w-6xl mx-auto px-5">
             <div className="mb-14">
-              <p className="section-label mb-3">Cosa puoi fare</p>
+              <p className="section-label mb-3">{t('features.label')}</p>
               <h2
                 className="font-display font-black uppercase text-white"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1 }}
               >
-                Funzionalità principali
+                {t('features.title')}
               </h2>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0">
               {features.map((f, i) => {
-                const Icon = f.icon
+                const Icon = featureIcons[i]
                 return (
                   <div
                     key={f.title}
@@ -125,21 +119,26 @@ export default function AppPage() {
         <section className="py-24 bg-pit-900">
           <div className="max-w-6xl mx-auto px-5">
             <div className="mb-14 text-center">
-              <p className="section-label mb-3">Schermate</p>
+              <p className="section-label mb-3">{t('screenshots.label')}</p>
               <h2
                 className="font-display font-black uppercase text-white"
                 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1 }}
               >
-                Progettata per la pista
+                {t('screenshots.title')}
               </h2>
               <p className="text-data/70 text-sm mt-3 max-w-md mx-auto">
-                UI ad alto contrasto, leggibile anche con il casco abbassato e alla luce solare diretta.
+                {t('screenshots.description')}
               </p>
             </div>
 
             <div className="flex flex-wrap justify-center gap-8">
-              {screenshots.map((s) => (
-                <PhoneMockup key={s.label} src={s.src} alt={s.label} label={s.label} />
+              {screenshots.map((s, i) => (
+                <PhoneMockup
+                  key={s.src}
+                  src={s.src}
+                  alt={screenshotLabels[i]}
+                  label={screenshotLabels[i]}
+                />
               ))}
             </div>
           </div>
@@ -148,16 +147,24 @@ export default function AppPage() {
         {/* ══════════════════════ CTA ══════════════════════ */}
         <section className="py-20 bg-pit-800 border-t border-pit-600">
           <div className="max-w-6xl mx-auto px-5 text-center">
-            <p className="section-label mb-4">Gratis</p>
+            <p className="section-label mb-4">{t('cta.label')}</p>
             <h2
               className="font-display font-black uppercase text-white mb-6"
               style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1 }}
             >
-              Scarica ora
+              {t('cta.title')}
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <AppBadge store="apple" />
-              <AppBadge store="google" />
+              <AppBadge
+                store="apple"
+                label={tBadge('appleLabel')}
+                storeName={tBadge('appleStore')}
+              />
+              <AppBadge
+                store="google"
+                label={tBadge('googleLabel')}
+                storeName={tBadge('googleStore')}
+              />
             </div>
           </div>
         </section>
@@ -167,7 +174,15 @@ export default function AppPage() {
   )
 }
 
-function AppBadge({ store }: { store: 'apple' | 'google' }) {
+function AppBadge({
+  store,
+  label,
+  storeName,
+}: {
+  store: 'apple' | 'google'
+  label: string
+  storeName: string
+}) {
   return (
     <a
       href="#"
@@ -179,12 +194,8 @@ function AppBadge({ store }: { store: 'apple' | 'google' }) {
         <Smartphone size={26} className="text-white" />
       )}
       <div className="text-left">
-        <p className="text-[10px] text-data uppercase tracking-wider">
-          {store === 'apple' ? 'Download on the' : 'Get it on'}
-        </p>
-        <p className="text-white font-display font-bold text-lg leading-tight">
-          {store === 'apple' ? 'App Store' : 'Google Play'}
-        </p>
+        <p className="text-[10px] text-data uppercase tracking-wider">{label}</p>
+        <p className="text-white font-display font-bold text-lg leading-tight">{storeName}</p>
       </div>
     </a>
   )

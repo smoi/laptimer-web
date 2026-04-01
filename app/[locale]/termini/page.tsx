@@ -1,13 +1,20 @@
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
-import Link from 'next/link';
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
+import Footer from '@/components/Footer'
+import Navbar from '@/components/Navbar'
+import Link from 'next/link'
 
-export const metadata = {
-  title: 'Termini e Condizioni — LapCoach',
-  description: 'Termini e condizioni di utilizzo di LapCoach: app, device e accesso beta.',
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}): Promise<Metadata> {
+  const { locale } = params
+  const t = await getTranslations({ locale, namespace: 'metadata.termini' })
+  return { title: t('title') }
 }
 
-// ─── Componenti di supporto ────────────────────────────────────────────────
+// ─── Support components ────────────────────────────────────────────────────
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -26,14 +33,6 @@ function P({ children }: { children: React.ReactNode }) {
   return <p>{children}</p>
 }
 
-function Placeholder({ children }: { children: React.ReactNode }) {
-  return (
-    <mark className="bg-amber/20 text-amber px-1 rounded-sm font-medium not-italic">
-      {children}
-    </mark>
-  )
-}
-
 function Ul({ items }: { items: string[] }) {
   return (
     <ul className="list-none space-y-1.5 mt-2">
@@ -47,24 +46,20 @@ function Ul({ items }: { items: string[] }) {
   )
 }
 
-// ─── Indice laterale ───────────────────────────────────────────────────────
-
 const sections = [
-  { id: 'titolare',      label: '1. Titolare' },
-  { id: 'oggetto',       label: '2. Oggetto' },
-  { id: 'app',           label: "3. L'App" },
-  { id: 'beta',          label: '4. Accesso beta' },
-  { id: 'device',        label: '5. Il Device' },
-  { id: 'responsabilita',label: '6. Responsabilità' },
-  { id: 'sicurezza',     label: '7. Uso in pista' },
-  { id: 'ip',            label: '8. Proprietà intellettuale' },
-  { id: 'recesso',       label: '9. Diritto di recesso' },
-  { id: 'garanzia',      label: '10. Garanzia legale' },
-  { id: 'modifiche',     label: '11. Modifiche' },
-  { id: 'legge',         label: '12. Legge e foro' },
+  { id: 'titolare',       label: '1. Titolare' },
+  { id: 'oggetto',        label: '2. Oggetto' },
+  { id: 'app',            label: "3. L'App" },
+  { id: 'beta',           label: '4. Accesso beta' },
+  { id: 'device',         label: '5. Il Device' },
+  { id: 'responsabilita', label: '6. Responsabilità' },
+  { id: 'sicurezza',      label: '7. Uso in pista' },
+  { id: 'ip',             label: '8. Proprietà intellettuale' },
+  { id: 'recesso',        label: '9. Diritto di recesso' },
+  { id: 'garanzia',       label: '10. Garanzia legale' },
+  { id: 'modifiche',      label: '11. Modifiche' },
+  { id: 'legge',          label: '12. Legge e foro' },
 ]
-
-// ─── Pagina ────────────────────────────────────────────────────────────────
 
 export default function TerminiPage() {
   return (
@@ -73,7 +68,6 @@ export default function TerminiPage() {
       <main className="bg-pit-900 min-h-screen">
         <div className="max-w-6xl mx-auto px-5 pt-32 pb-20">
 
-          {/* Header */}
           <div className="mb-12">
             <p className="section-label mb-3">Legale</p>
             <h1
@@ -86,7 +80,6 @@ export default function TerminiPage() {
               Ultimo aggiornamento: marzo 2026
             </p>
 
-            {/* Nota placeholder */}
             <div className="mt-5 bg-amber/10 border border-amber/30 px-4 py-3 text-xs text-amber leading-relaxed max-w-2xl">
               <strong>Nota interna:</strong> i campi evidenziati in arancione sono placeholder da completare
               con i dati societari definitivi prima del lancio pubblico.
@@ -95,7 +88,6 @@ export default function TerminiPage() {
 
           <div className="grid lg:grid-cols-[220px_1fr] gap-12 items-start">
 
-            {/* Indice sticky */}
             <nav className="hidden lg:block sticky top-24 border border-pit-600 bg-pit-800 p-5">
               <p className="section-label mb-4">Indice</p>
               <ul className="space-y-2">
@@ -112,7 +104,6 @@ export default function TerminiPage() {
               </ul>
             </nav>
 
-            {/* Contenuto */}
             <div className="max-w-2xl">
 
               <Section id="titolare" title="Titolare del servizio">
@@ -121,7 +112,7 @@ export default function TerminiPage() {
                   EBSM SRL,
                   con sede legale in Corso Buenos Aires 20, 20124 Milano (MI),
                   P.IVA 09104640967,
-                  iscritta al Registro delle Imprese di Milano                  
+                  iscritta al Registro delle Imprese di Milano
                 </P>
                 <P>
                   Contatto:{' '}
@@ -241,9 +232,7 @@ export default function TerminiPage() {
                 <P>
                   LapCoach non garantisce che l&apos;App o il device siano privi di errori,
                   che il servizio sia ininterrotto, o che i dati GPS siano accurati in ogni
-                  condizione ambientale. L&apos;accuratezza del GPS dipende da fattori esterni
-                  (copertura satellitare, ostacoli fisici, interferenze) non controllabili
-                  da LapCoach.
+                  condizione ambientale.
                 </P>
                 <P>
                   Nei casi in cui la responsabilità non possa essere esclusa per legge,
@@ -262,21 +251,14 @@ export default function TerminiPage() {
                 </P>
                 <P>
                   L&apos;utente è il solo responsabile della propria sicurezza e di quella
-                  di terzi durante l&apos;utilizzo del veicolo in pista. LapCoach non si
-                  assume alcuna responsabilità per incidenti, danni a persone o cose,
-                  conseguenti o connessi all&apos;utilizzo dell&apos;App o del device.
+                  di terzi durante l&apos;utilizzo del veicolo in pista.
                 </P>
                 <Ul items={[
-                  'Non consultare mai l\'App o i dati in tempo reale mentre si guida.',
+                  "Non consultare mai l'App o i dati in tempo reale mentre si guida.",
                   'Rispettare sempre il regolamento del circuito e le indicazioni dei marshal.',
                   'Fissare il device in modo sicuro prima di entrare in pista.',
                   'Il device non è omologato come equipaggiamento di sicurezza.',
                 ]} />
-                <P>
-                  I suggerimenti dell&apos;AI Coach sono analisi automatizzate a scopo
-                  orientativo. Non sostituiscono la valutazione di un istruttore qualificato
-                  né devono essere applicati senza adeguata verifica.
-                </P>
               </Section>
 
               <Section id="ip" title="Proprietà intellettuale">
@@ -306,14 +288,7 @@ export default function TerminiPage() {
                   <a href="mailto:support@lapcoach.racing" className="text-lap hover:underline">
                     support@lapcoach.racing
                   </a>{' '}
-                  prima della scadenza del termine. Il prodotto dovrà essere restituito
-                  in condizioni integre, nell&apos;imballaggio originale, entro 14 giorni
-                  dalla comunicazione del recesso.
-                </P>
-                <P>
-                  LapCoach rimborserà il prezzo pagato entro 14 giorni dalla ricezione
-                  del prodotto reso, utilizzando lo stesso metodo di pagamento usato
-                  per l&apos;acquisto.
+                  prima della scadenza del termine.
                 </P>
                 <P>
                   <strong className="text-white">App:</strong> poiché l&apos;App è gratuita,
@@ -327,16 +302,6 @@ export default function TerminiPage() {
                   dagli artt. 128–135 del D.Lgs. 206/2005 per una durata di{' '}
                   <strong className="text-white">24 mesi</strong> dalla data di consegna,
                   applicabile ai consumatori.
-                </P>
-                <P>
-                  In caso di difetto di conformità, l&apos;utente ha diritto, a sua scelta,
-                  alla riparazione o alla sostituzione del prodotto, o — qualora tali rimedi
-                  non siano possibili o comportino costi sproporzionati — alla riduzione
-                  del prezzo o alla risoluzione del contratto.
-                </P>
-                <P>
-                  La garanzia non copre danni causati da uso improprio, cadute, urti,
-                  liquidi, modifiche non autorizzate o usura normale.
                 </P>
                 <P>
                   LapCoach offre inoltre una garanzia commerciale aggiuntiva di{' '}
@@ -362,13 +327,7 @@ export default function TerminiPage() {
                 <P>
                   I presenti Termini sono regolati dalla legge italiana. Per qualsiasi
                   controversia relativa all&apos;interpretazione, esecuzione o risoluzione
-                  dei presenti Termini, è competente il Tribunale di{' '}
-                  Milano.
-                </P>
-                <P>
-                  Per i consumatori, resta ferma la competenza del tribunale del luogo
-                  di residenza o domicilio del consumatore, ai sensi dell&apos;art. 66-bis
-                  del D.Lgs. 206/2005.
+                  dei presenti Termini, è competente il Tribunale di Milano.
                 </P>
                 <P>
                   Per la risoluzione alternativa delle controversie (ADR/ODR), il consumatore
@@ -384,7 +343,6 @@ export default function TerminiPage() {
                 </P>
               </Section>
 
-              {/* Footer nota */}
               <div className="border-t border-pit-600 pt-8 mt-8">
                 <p className="text-data/50 text-xs leading-relaxed">
                   Per domande sui presenti Termini:{' '}
