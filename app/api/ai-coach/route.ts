@@ -121,6 +121,9 @@ Analizza il trend dei giri — miglioramento, calo, plateau. Identifica in quale
 ## Consistenza
 Analizza la varianza tra i giri. Un pilota consistente è un pilota che migliora. Dai un giudizio numerico sulla consistenza (es. deviazione standard dei tempi).
 
+## Settori
+Potresti trovare anche dati sui settori. Se disponibili, analizzali per identificare punti di forza e debolezza. Es. "Il settore 2 è il più lento, probabilmente a causa di una frenata anticipata alla curva X".
+
 ## Punti di forza
 Cosa ha funzionato in questa sessione.
 
