@@ -4,7 +4,7 @@ import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import ProductCard from '@/components/ProductCard'
 import WaitlistSection from '@/components/WaitlistSection'
-import { Apple, Bluetooth, Brain, ChevronRight, Satellite, Smartphone } from 'lucide-react'
+import { Apple, Bluetooth, Brain, Check, ChevronRight, Film, Map, Satellite, Smartphone, Volume2, Zap } from 'lucide-react'
 
 export async function generateMetadata({
   params,
@@ -26,6 +26,11 @@ export default async function Home() {
   const faqItems = t.raw('faq.items') as { q: string; a: string }[]
   const gpsStats = t.raw('features.gps.stats') as string[][]
   const aiSectors = t.raw('features.ai.sectors') as { sector: string; delta: string; note: string }[]
+  const videoPoints = t.raw('features.video.points') as string[]
+  const accelMilestones = t.raw('features.accel.milestones') as string[]
+  const mapPoints = t.raw('features.mapHeatmap.points') as string[]
+  const voiceExamples = t.raw('features.voice.examples') as string[]
+  const pricingTiers = t.raw('pricing.tiers') as { name: string; price: string; sub: string; cta: string; ctaHref: string; features: string[] }[]
 
   return (
     <>
@@ -283,6 +288,157 @@ export default async function Home() {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* Feature 4 — Video + Accel */}
+            <div className="grid lg:grid-cols-2 gap-0 border border-pit-600 border-t-0">
+              <div className="p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-pit-600">
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 w-12 h-12 border border-amber/40 flex items-center justify-center bg-amber/10">
+                    <Film size={22} className="text-amber" />
+                  </div>
+                  <div>
+                    <p className="section-label mb-2">{t('features.video.label')}</p>
+                    <h3 className="font-display font-black text-3xl text-white uppercase mb-3">
+                      {t('features.video.title')}
+                    </h3>
+                    <p className="text-data/80 text-sm leading-relaxed mb-4">
+                      {t('features.video.body')}
+                    </p>
+                    <ul className="space-y-1.5">
+                      {videoPoints.map((p) => (
+                        <li key={p} className="flex items-center gap-2 text-xs text-data/70">
+                          <Check size={12} className="text-lap shrink-0" />
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="p-8 lg:p-12">
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 w-12 h-12 border border-lap/40 flex items-center justify-center bg-lap/10">
+                    <Zap size={22} className="text-lap" />
+                  </div>
+                  <div>
+                    <p className="section-label mb-2">{t('features.accel.label')}</p>
+                    <h3 className="font-display font-black text-3xl text-white uppercase mb-3">
+                      {t('features.accel.title')}
+                    </h3>
+                    <p className="text-data/80 text-sm leading-relaxed mb-4">
+                      {t('features.accel.body')}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {accelMilestones.map((m) => (
+                        <div key={m} className="bg-pit-800 px-3 py-2">
+                          <p className="font-display font-bold text-sm text-lap">{m}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Feature 5 — Map + Voice */}
+            <div className="grid lg:grid-cols-2 gap-0 border border-pit-600 border-t-0">
+              <div className="p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-pit-600">
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 w-12 h-12 border border-lap/40 flex items-center justify-center bg-lap/10">
+                    <Map size={22} className="text-lap" />
+                  </div>
+                  <div>
+                    <p className="section-label mb-2">{t('features.mapHeatmap.label')}</p>
+                    <h3 className="font-display font-black text-3xl text-white uppercase mb-3">
+                      {t('features.mapHeatmap.title')}
+                    </h3>
+                    <p className="text-data/80 text-sm leading-relaxed mb-4">
+                      {t('features.mapHeatmap.body')}
+                    </p>
+                    <ul className="space-y-1.5">
+                      {mapPoints.map((p) => (
+                        <li key={p} className="flex items-center gap-2 text-xs text-data/70">
+                          <Check size={12} className="text-lap shrink-0" />
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="p-8 lg:p-12">
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0 w-12 h-12 border border-amber/40 flex items-center justify-center bg-amber/10">
+                    <Volume2 size={22} className="text-amber" />
+                  </div>
+                  <div>
+                    <p className="section-label mb-2">{t('features.voice.label')}</p>
+                    <h3 className="font-display font-black text-3xl text-white uppercase mb-3">
+                      {t('features.voice.title')}
+                    </h3>
+                    <p className="text-data/80 text-sm leading-relaxed mb-4">
+                      {t('features.voice.body')}
+                    </p>
+                    <div className="space-y-2">
+                      {voiceExamples.map((e) => (
+                        <div key={e} className="bg-pit-800 px-3 py-2 flex items-center gap-2">
+                          <Volume2 size={11} className="text-amber shrink-0" />
+                          <p className="text-xs font-display text-data">{e}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════ PRICING ══════════════════════ */}
+        <section className="py-24 bg-pit-800 border-t border-pit-600">
+          <div className="max-w-6xl mx-auto px-5">
+            <div className="mb-16">
+              <p className="section-label mb-3">{t('pricing.label')}</p>
+              <h2
+                className="font-display font-black uppercase text-white"
+                style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1 }}
+              >
+                {t('pricing.title')}
+                <br />
+                <span className="text-lap">{t('pricing.titleHighlight')}</span>
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-3 gap-0">
+              {pricingTiers.map((tier, i) => (
+                <div
+                  key={tier.name}
+                  className={`p-8 border border-pit-600 relative flex flex-col ${i > 0 ? 'md:-ml-px' : ''} ${i === 1 ? '-mt-px md:mt-0 border-amber/50' : ''}`}
+                >
+                  {i === 1 && <div className="absolute top-0 left-0 right-0 h-[2px] bg-amber" />}
+                  <p className="font-display font-black text-4xl text-white mb-1">{tier.price}</p>
+                  <p className="font-display font-bold text-xl text-white uppercase">{tier.name}</p>
+                  <p className="text-xs text-pit-400 uppercase tracking-wider mb-6">{tier.sub}</p>
+                  <ul className="space-y-2 mb-8 flex-1">
+                    {tier.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-data/80">
+                        <Check size={14} className="text-lap shrink-0 mt-0.5" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={tier.ctaHref}
+                    className={`block text-center text-sm font-display font-bold uppercase tracking-wider py-3 px-4 transition-colors ${
+                      i === 1
+                        ? 'bg-amber text-black hover:bg-amber/90'
+                        : 'border border-pit-500 text-data hover:border-lap hover:text-white'
+                    }`}
+                  >
+                    {tier.cta}
+                  </a>
+                </div>
+              ))}
             </div>
           </div>
         </section>

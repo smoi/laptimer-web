@@ -97,6 +97,40 @@
           { "sector": "Parabolica", "delta": "+0.1s", "note": "Traiettoria ottimale" },
           { "sector": "Ascari", "delta": "-0.5s", "note": "Punto di corda da anticipare" }
         ]
+      },
+      "video": {
+        "label": "Premium",
+        "title": "Video + Telemetria",
+        "body": "Registra la sessione e rivivila con un HUD telemetrico completamente sincronizzato: velocità, tempo giro, delta, e una mini-mappa che traccia la tua posizione in pista in tempo reale.",
+        "points": [
+          "HUD sincronizzato ai timestamp GPS",
+          "Velocità · Tempo giro · Delta",
+          "Mini-mappa con posizione live",
+          "Condivisione diretta dall'app"
+        ]
+      },
+      "accel": {
+        "label": "Accel Timer",
+        "title": "0–100 & ¼ di Miglio",
+        "body": "Cronometro di accelerazione dedicato con rilevamento automatico della partenza. Milestone a 60, 100 e 200 km/h, più quarto di miglio (402 m) con velocità al passaggio.",
+        "milestones": ["0–60 km/h", "0–100 km/h", "0–200 km/h", "¼ Miglio"]
+      },
+      "mapHeatmap": {
+        "label": "Post-sessione",
+        "title": "Heatmap Velocità",
+        "body": "Ogni giro visualizzato sulla mappa con colore codificato per velocità. Rilevamento automatico delle zone frenata e contrassegnate con le velocità di entrata e uscita. Toggle overlay best lap per confrontare.",
+        "points": [
+          "Heatmap velocità per colore",
+          "Rilevamento zone frenata",
+          "Overlay best lap per confronto",
+          "Marker velocità su entrata/uscita"
+        ]
+      },
+      "voice": {
+        "label": "Mani libere",
+        "title": "Annunci Vocali",
+        "body": "Al termine di ogni giro e settore, l'app legge il tuo tempo e delta ad alta voce. Mani sul volante, occhi in pista — senza bisogno di guardare lo schermo.",
+        "examples": ["Giro 3 · 1:24.5 · best", "Settore 2 · +0.3", "0–100 · 3.8 sec"]
       }
     },
     "howItWorks": {
@@ -172,6 +206,37 @@
       "button": "Avvisami",
       "successTitle": "Perfetto — ti avvisiamo!",
       "successBody": "Riceverai una email non appena LapCoach sarà disponibile."
+    },
+    "pricing": {
+      "label": "Prezzi chiari",
+      "title": "Tre modi per usare",
+      "titleHighlight": "LapCoach",
+      "tiers": [
+        {
+          "name": "Free",
+          "price": "€0",
+          "sub": "Per sempre gratis",
+          "cta": "Scarica l'app",
+          "ctaHref": "#download",
+          "features": ["Fino a 2 sessioni salvate", "GPS telefono (~1Hz)", "Cronometro live", "Annunci vocali", "91 circuiti + custom", "Accel timer"]
+        },
+        {
+          "name": "Premium",
+          "price": "€9.99",
+          "sub": "Acquisto in-app una tantum",
+          "cta": "Scarica & sblocca",
+          "ctaHref": "#download",
+          "features": ["Sessioni illimitate", "AI Coach analisi", "Video + HUD telemetrico", "Tutto il piano Free"]
+        },
+        {
+          "name": "Device",
+          "price": "€59",
+          "sub": "Include Premium",
+          "cta": "Richiedi accesso beta",
+          "ctaHref": "/shop",
+          "features": ["GPS 20Hz dedicato", "< 1m accuratezza", "Premium sbloccato", "Aggiornamenti firmware OTA", "Tutto il piano Premium"]
+        }
+      ]
     }
   },
   "appPage": {
@@ -186,12 +251,18 @@
       "label": "Cosa puoi fare",
       "title": "Funzionalità principali",
       "items": [
-        { "title": "Cronometro preciso", "body": "Tempi sul giro aggiornati in tempo reale a 20Hz. Risoluzione al millisecondo." },
-        { "title": "Best lap tracking", "body": "L'app confronta ogni giro con il miglior tempo della sessione e dello storico." },
-        { "title": "Velocità & dati", "body": "Velocità istantanea, massima, media. Grafico velocità sul tracciato." },
-        { "title": "AI Coach", "body": "Analisi post-sessione con identificazione automatica dei settori critici." },
+        { "title": "Cronometro preciso", "body": "Tempi sul giro aggiornati in tempo reale a 20Hz. Risoluzione al millisecondo. Delta live vs miglior giro per posizione sul tracciato." },
+        { "title": "Best lap tracking", "body": "L'app confronta ogni giro con il miglior tempo della sessione." },
+        { "title": "Analisi settori", "body": "Suddivisione automatica S1/S2/S3 con delta vs miglior giro per settore. Theoretical Best Lap: somma dei tuoi settori migliori." },
+        { "title": "Velocità & dati", "body": "Velocità istantanea e massima. Etichette di velocità sul tracciato." },
+        { "title": "AI Coach", "body": "Analisi post-sessione con identificazione automatica dei settori critici. Analizza anche singoli giri in profondità." },
+        { "title": "Video + Telemetria", "body": "Registra i giri e rivedili con HUD sincronizzato: velocità, delta e mini-mappa sovrapposti al video." },
         { "title": "Sync con device BLE", "body": "Connessione automatica al LapCoach One via Bluetooth Low Energy 5.0." },
-        { "title": "Rilevamento circuito", "body": "Riconosce automaticamente il circuito al momento del lancio della sessione." }
+        { "title": "Rilevamento circuito", "body": "Riconosce automaticamente il circuito all'avvio della sessione. 91 circuiti precaricati + custom." },
+        { "title": "Accel timer", "body": "Rilevamento automatico partenza. Milestone: 0–60, 0–100, 0–200 km/h e quarto di miglio (402 m)." },
+        { "title": "Annunci vocali", "body": "Tempo giro e delta letti ad alta voce dopo ogni giro e settore. Mani libere — senza guardare lo schermo." },
+        { "title": "Heatmap velocità", "body": "Mappa post-sessione con colore per velocità. Rilevamento delle zone frenata con velocità di entrata/uscita." },
+        { "title": "Storico sessioni", "body": "Registro completo di ogni sessione: best lap, top speed, lista giri, settori. Export NDJSON." }
       ]
     },
     "screenshots": {

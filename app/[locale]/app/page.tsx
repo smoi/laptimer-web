@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import PhoneMockup from '@/components/PhoneMockup'
-import { Apple, Bluetooth, Brain, Gauge, MapPin, Smartphone, Timer, TrendingUp } from 'lucide-react'
+import { Apple, Archive, BarChart2, Bluetooth, Brain, Film, Gauge, Map, MapPin, Smartphone, Timer, TrendingUp, Volume2, Zap } from 'lucide-react'
 
-const featureIcons = [Timer, TrendingUp, Gauge, Brain, Bluetooth, MapPin]
+const featureIcons = [Timer, TrendingUp, BarChart2, Gauge, Brain, Film, Bluetooth, MapPin, Zap, Volume2, Map, Archive]
 
 const screenshots = [
   { src: '/screenshots/screen-timing.png',   labelKey: 0 },

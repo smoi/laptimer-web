@@ -97,6 +97,40 @@
           { "sector": "Parabolica", "delta": "+0.1s", "note": "Optimal trajectory" },
           { "sector": "Ascari", "delta": "-0.5s", "note": "Apex point to anticipate" }
         ]
+      },
+      "video": {
+        "label": "Premium",
+        "title": "Video + Telemetry",
+        "body": "Record your session and replay it with a fully synchronized telemetry HUD: speed, lap time, delta — and a mini-map tracking your position on circuit in real time.",
+        "points": [
+          "HUD synced to GPS timestamps",
+          "Speed · Lap time · Delta",
+          "Mini-map with live position",
+          "Share directly from the app"
+        ]
+      },
+      "accel": {
+        "label": "Accel Timer",
+        "title": "0–100 & ¼ Mile",
+        "body": "Dedicated acceleration timer with automatic launch detection. Milestones at 60, 100 and 200 km/h, plus quarter mile (402 m) with speed at crossing.",
+        "milestones": ["0–60 km/h", "0–100 km/h", "0–200 km/h", "¼ Mile"]
+      },
+      "mapHeatmap": {
+        "label": "Post-session",
+        "title": "Speed Heatmap",
+        "body": "Every lap visualised on the map with speed-coded colour. Braking zones are detected and marked with entry and exit speeds. Toggle the best lap overlay to compare.",
+        "points": [
+          "Colour-coded speed heatmap",
+          "AI braking zone detection",
+          "Best lap comparison overlay",
+          "Speed markers on entry & exit"
+        ]
+      },
+      "voice": {
+        "label": "Hands-free",
+        "title": "Voice Announcements",
+        "body": "After each lap and sector, the app reads your time and delta aloud. Hands on the wheel, eyes on the track — no need to look at the screen.",
+        "examples": ["Lap 3 · 1:24.5 · best", "Sector 2 · +0.3", "0–100 · 3.8 sec"]
       }
     },
     "howItWorks": {
@@ -172,6 +206,37 @@
       "button": "Notify me",
       "successTitle": "Perfect — we'll notify you!",
       "successBody": "You'll receive an email as soon as LapCoach is available."
+    },
+    "pricing": {
+      "label": "Simple pricing",
+      "title": "Three ways to use",
+      "titleHighlight": "LapCoach",
+      "tiers": [
+        {
+          "name": "Free",
+          "price": "€0",
+          "sub": "Forever free",
+          "cta": "Download",
+          "ctaHref": "#download",
+          "features": ["Up to 2 sessions saved", "Phone GPS (~1Hz)", "Live lap timer", "Voice announcements", "91 circuits + custom", "Accel timer"]
+        },
+        {
+          "name": "Premium",
+          "price": "€9.99",
+          "sub": "One-time in-app purchase",
+          "cta": "Download & unlock",
+          "ctaHref": "#download",
+          "features": ["Unlimited sessions", "AI Coach analysis", "Video + telemetry HUD", "All Free features"]
+        },
+        {
+          "name": "Device",
+          "price": "€59",
+          "sub": "Includes Premium",
+          "cta": "Request beta access",
+          "ctaHref": "/shop",
+          "features": ["20Hz dedicated GPS", "< 1m accuracy", "Premium unlocked", "OTA firmware updates", "All Premium features"]
+        }
+      ]
     }
   },
   "appPage": {
@@ -186,12 +251,18 @@
       "label": "What you can do",
       "title": "Main features",
       "items": [
-        { "title": "Precise timer", "body": "Lap times updated in real time at 20Hz. Millisecond resolution." },
-        { "title": "Best lap tracking", "body": "The app compares every lap with the best time of the session and history." },
-        { "title": "Speed & data", "body": "Instantaneous, maximum, average speed. Speed graph on track." },
-        { "title": "AI Coach", "body": "Post-session analysis with automatic identification of critical sectors." },
+        { "title": "Precise timer", "body": "Lap times updated in real time at 20Hz. Millisecond resolution. Live delta vs best lap per track position." },
+        { "title": "Best lap tracking", "body": "The app compares every lap with the best time of the session." },
+        { "title": "Sector analysis", "body": "Automatic S1/S2/S3 splits with delta vs best lap per sector. Theoretical Best Lap: sum of your best individual sectors." },
+        { "title": "Speed & data", "body": "Instantaneous and maximum. Speed labels on track." },
+        { "title": "AI Coach", "body": "Post-session analysis with automatic identification of critical sectors. Also analyse single laps in depth." },
+        { "title": "Video + Telemetry", "body": "Record laps and replay with synchronized HUD: speed, delta and mini-map overlaid on video." },
         { "title": "BLE device sync", "body": "Automatic connection to the LapCoach One via Bluetooth Low Energy 5.0." },
-        { "title": "Circuit detection", "body": "Automatically recognises the circuit when the session is started." }
+        { "title": "Circuit detection", "body": "Automatically recognises the circuit at session start. 91 preloaded tracks worldwide + custom." },
+        { "title": "Accel timer", "body": "Automatic launch detection. Milestones: 0–60, 0–100, 0–200 km/h and quarter mile (402 m)." },
+        { "title": "Voice announcements", "body": "Lap time and delta read aloud after each lap and sector. Hands-free — no need to glance at the screen." },
+        { "title": "Speed heatmap", "body": "Post-session map with colour-coded speed. Braking zones and marks them with entry/exit speeds." },
+        { "title": "Session history", "body": "Full log of every session: best lap, top speed, lap list, sectors. Export NDJSON for external analysis." }
       ]
     },
     "screenshots": {
