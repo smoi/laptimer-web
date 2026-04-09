@@ -140,24 +140,39 @@ function lapPrompt(vehicle?: string): string {
   const v = vehicle ? ` su ${vehicle}` : ''
   return `Sei un coach di guida esperto per lap timer. Analizza i dati di questo giro${v}.
 
-Rispondi in italiano con un report Markdown ben formattato. Struttura il report così:
+  Rispondi in italiano con un report Markdown ben formattato. Struttura il report così:
 
-## Sintesi giro
-Una riga — giudizio complessivo del giro e delta rispetto al best. Fai attenzione al delta, se ha segno meno davanti vuol dire che il giro è più veloce del best, se ha segno più è più lento.
+  ## Sintesi giro
+  Una riga — giudizio complessivo del giro e delta rispetto 
+  al best. Se delta ha segno meno il giro è più veloce del best,
+  se ha segno più è più lento. Esprimi il delta in secondi, 
+  non millisecondi.
 
-## Analisi velocità
-Confronta velocità massima e media con i giri precedenti se disponibili. Identifica dove si perde velocità.
+  ## Analisi settori
+  Per ogni settore: tempo, delta vs best in secondi, giudizio
+  (verde/giallo/rosso), causa principale del gap se presente.
+  Identifica il settore più critico.
 
-## Analisi tecnica per settore
-Se riconosci le curve dal nome del circuito, analizza curva per curva con suggerimenti specifici su traiettoria, punto di frenata e punto di corda. Altrimenti analizza per settori.
+  ## Analisi frenate
+  Usa i brake_points per identificare le zone di frenata.
+  Se riconosci il circuito, associa ogni brake point alla curva
+  corrispondente. Per ogni zona: valuta entry speed, exit speed
+  e intensità della frenata. Segnala anomalie (frenata troppo 
+  anticipata, exit speed bassa = perdita in percorrenza).
 
-## Top 3 miglioramenti
-I tre interventi con maggior impatto sul tempo, in ordine di priorità. Sii chirurgico — indica metri, velocità, marce dove possibile.
+  ## Top 3 miglioramenti
+  I tre interventi con maggior impatto sul tempo, in ordine
+  di priorità. Sii chirurgico — indica metri, velocità, marce
+  dove possibile. Ogni punto max 2 righe.
 
-## Focus per il prossimo giro
-Un solo obiettivo da portare in pista nel giro successivo. Uno solo — la semplicità aiuta la concentrazione in guida.
+  ## Focus per il prossimo giro
+  Un solo obiettivo concreto da portare in pista. Uno solo.
+  Deve essere un'azione fisica specifica, non un concetto 
+  generale. Esempio corretto: "Ritarda il punto di frenata 
+  alla Prima Variante di 10-15 metri".
+  Esempio sbagliato: "Migliora la fluidità in curva".
 
-Rispondi esclusivamente in Markdown e quando usi i tempi, fai attenzione se ha senso usare i valori in ms o in secondi o minuti.`
+  Rispondi esclusivamente in Markdown e quando usi i tempi, fai attenzione se ha senso usare i valori in ms o in secondi o minuti.`
 }
 
 // ─── Provider implementations ──────────────────────────────────────────────
