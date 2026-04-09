@@ -106,21 +106,11 @@ const LAP_COMMENT_SCHEMA = {
 
 // ─── System prompts ────────────────────────────────────────────────────────
 
-function languageInstruction(locale: string): string {
-  if (locale.startsWith('it')) return 'Rispondi in italiano.'
-  if (locale.startsWith('en')) return 'Reply in English.'
-  if (locale.startsWith('fr')) return 'Réponds en français.'
-  if (locale.startsWith('de')) return 'Antworte auf Deutsch.'
-  if (locale.startsWith('es')) return 'Responde en español.'
-  return `Reply in the language with locale code "${locale}".`
-}
-
-function sessionPrompt(vehicle?: string, locale = 'it'): string {
+function sessionPrompt(vehicle?: string): string {
   const v = vehicle ? ` su ${vehicle}` : ''
-  const lang = languageInstruction(locale)
   return `Sei un coach di guida esperto per lap timer. Analizza i dati di questa sessione in pista${v}.
 
-${lang} Report in Markdown ben formattato. Struttura il report così:
+Rispondi in italiano con un report Markdown ben formattato. Struttura il report così:
 
 ## Sintesi sessione
 Una riga con il giudizio complessivo della sessione.
@@ -146,12 +136,11 @@ Massimo 3 aree, in ordine di impatto sul tempo. Sii specifico e concreto — no 
 Rispondi esclusivamente in Markdown e quando usi i tempi, fai attenzione se ha senso usare i valori in ms o in secondi o minuti.`
 }
 
-function lapPrompt(vehicle?: string, locale = 'it'): string {
+function lapPrompt(vehicle?: string): string {
   const v = vehicle ? ` su ${vehicle}` : ''
-  const lang = languageInstruction(locale)
   return `Sei un coach di guida esperto per lap timer. Analizza i dati di questo giro${v}.
 
-  ${lang} Report in Markdown ben formattato. Struttura il report così:
+  Rispondi in italiano con un report Markdown ben formattato. Struttura il report così:
 
   ## Sintesi giro
   Una riga — giudizio complessivo del giro e delta rispetto 
@@ -268,6 +257,85 @@ async function callClaude(systemPrompt: string, payload: unknown): Promise<LapAi
   return toolBlock.input as LapAiComment
 }
 
+// ─── Translation ───────────────────────────────────────────────────────────
+
+function localeToLanguageName(locale: string): string {
+  if (locale.startsWith('en')) return 'English'
+  if (locale.startsWith('fr')) return 'French'
+  if (locale.startsWith('de')) return 'German'
+  if (locale.startsWith('es')) return 'Spanish'
+  if (locale.startsWith('pt')) return 'Portuguese'
+  if (locale.startsWith('nl')) return 'Dutch'
+  if (locale.startsWith('ja')) return 'Japanese'
+  return locale
+}
+
+async function translateResult(result: LapAiComment, locale: string): Promise<LapAiComment> {
+  const language = localeToLanguageName(locale)
+  const translatePrompt = `You are a precise translator. Translate the following text to ${language}.
+Keep ALL Markdown formatting exactly as-is (headings, bold, lists, line breaks).
+Translate only the text content. Return only the translated text, nothing else.`
+
+  let translatedMarkdown: string
+  let translatedTags: string[]
+
+  if (AI_PROVIDER === 'claude') {
+    const apiKey = process.env.ANTHROPIC_API_KEY!
+    const { default: Anthropic } = await import('@anthropic-ai/sdk')
+    const client = new Anthropic({ apiKey })
+
+    const mdRes = await client.messages.create({
+      model: CLAUDE_MODEL,
+      max_tokens: 4096,
+      system: translatePrompt,
+      messages: [{ role: 'user', content: result.markdown }],
+    })
+    translatedMarkdown = (mdRes.content[0] as { type: string; text: string }).text
+
+    const tagsRes = await client.messages.create({
+      model: CLAUDE_MODEL,
+      max_tokens: 256,
+      system: `Translate these Italian tags to ${language}. Return a JSON array of strings, nothing else.`,
+      messages: [{ role: 'user', content: JSON.stringify(result.tags) }],
+    })
+    translatedTags = JSON.parse((tagsRes.content[0] as { type: string; text: string }).text)
+  } else {
+    const apiKey = process.env.OPENAI_API_KEY!
+
+    const mdRes = await fetch('https://api.openai.com/v1/responses', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: OPENAI_MODEL,
+        input: [
+          { role: 'system', content: translatePrompt },
+          { role: 'user', content: result.markdown },
+        ],
+      }),
+    })
+    const mdJson = await mdRes.json() as Record<string, unknown>
+    translatedMarkdown = mdJson['output_text'] as string ?? extractOpenAIText(mdJson) ?? result.markdown
+
+    const tagsRes = await fetch('https://api.openai.com/v1/responses', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: OPENAI_MODEL,
+        input: [
+          { role: 'system', content: `Translate these Italian tags to ${language}. Return a JSON array of strings, nothing else.` },
+          { role: 'user', content: JSON.stringify(result.tags) },
+        ],
+      }),
+    })
+    const tagsJson = await tagsRes.json() as Record<string, unknown>
+    const tagsText = tagsJson['output_text'] as string ?? extractOpenAIText(tagsJson)
+    translatedTags = tagsText ? JSON.parse(tagsText) : result.tags
+  }
+
+  console.log('[ai-coach] translated to', language)
+  return { ...result, markdown: translatedMarkdown, tags: translatedTags }
+}
+
 // ─── Route handler ─────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -290,8 +358,8 @@ export async function POST(req: NextRequest) {
   }
 
   const systemPrompt = type === 'session'
-    ? sessionPrompt(vehicle as string | undefined, resolvedLocale)
-    : lapPrompt(vehicle as string | undefined, resolvedLocale)
+    ? sessionPrompt(vehicle as string | undefined)
+    : lapPrompt(vehicle as string | undefined)
 
   console.log('[ai-coach] ── incoming request ──────────────────────')
   console.log('[ai-coach] provider :', AI_PROVIDER)
@@ -304,9 +372,14 @@ export async function POST(req: NextRequest) {
   console.log('[ai-coach] ───────────────────────────────────────────')
 
   try {
-    const result = AI_PROVIDER === 'claude'
+    let result = AI_PROVIDER === 'claude'
       ? await callClaude(systemPrompt, payload)
       : await callOpenAI(systemPrompt, payload)
+
+    if (!resolvedLocale.startsWith('it')) {
+      console.log('[ai-coach] locale is', resolvedLocale, '— translating...')
+      result = await translateResult(result, resolvedLocale)
+    }
 
     console.log('[ai-coach] ── response ───────────────────────────────')
     console.log('[ai-coach] confidence :', result.confidence)
