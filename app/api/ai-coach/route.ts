@@ -266,10 +266,25 @@ export async function POST(req: NextRequest) {
     ? sessionPrompt(vehicle as string | undefined)
     : lapPrompt(vehicle as string | undefined)
 
+  console.log('[ai-coach] ── incoming request ──────────────────────')
+  console.log('[ai-coach] provider :', AI_PROVIDER)
+  console.log('[ai-coach] type     :', type)
+  console.log('[ai-coach] vehicle  :', vehicle ?? '(none)')
+  console.log('[ai-coach] payload  :', JSON.stringify(payload, null, 2))
+  console.log('[ai-coach] system prompt ──────────────────────────')
+  console.log(systemPrompt)
+  console.log('[ai-coach] ───────────────────────────────────────────')
+
   try {
     const result = AI_PROVIDER === 'claude'
       ? await callClaude(systemPrompt, payload)
       : await callOpenAI(systemPrompt, payload)
+
+    console.log('[ai-coach] ── response ───────────────────────────────')
+    console.log('[ai-coach] confidence :', result.confidence)
+    console.log('[ai-coach] tags       :', result.tags)
+    console.log('[ai-coach] markdown (preview) :', result.markdown.slice(0, 300))
+    console.log('[ai-coach] ───────────────────────────────────────────')
 
     return NextResponse.json(result)
   } catch (err) {
