@@ -106,11 +106,21 @@ const LAP_COMMENT_SCHEMA = {
 
 // ─── System prompts ────────────────────────────────────────────────────────
 
-function sessionPrompt(vehicle?: string): string {
+function languageInstruction(locale: string): string {
+  if (locale.startsWith('it')) return 'Rispondi in italiano.'
+  if (locale.startsWith('en')) return 'Reply in English.'
+  if (locale.startsWith('fr')) return 'Réponds en français.'
+  if (locale.startsWith('de')) return 'Antworte auf Deutsch.'
+  if (locale.startsWith('es')) return 'Responde en español.'
+  return `Reply in the language with locale code "${locale}".`
+}
+
+function sessionPrompt(vehicle?: string, locale = 'it'): string {
   const v = vehicle ? ` su ${vehicle}` : ''
+  const lang = languageInstruction(locale)
   return `Sei un coach di guida esperto per lap timer. Analizza i dati di questa sessione in pista${v}.
 
-Rispondi in italiano con un report Markdown ben formattato. Struttura il report così:
+${lang} Report in Markdown ben formattato. Struttura il report così:
 
 ## Sintesi sessione
 Una riga con il giudizio complessivo della sessione.
@@ -136,11 +146,12 @@ Massimo 3 aree, in ordine di impatto sul tempo. Sii specifico e concreto — no 
 Rispondi esclusivamente in Markdown e quando usi i tempi, fai attenzione se ha senso usare i valori in ms o in secondi o minuti.`
 }
 
-function lapPrompt(vehicle?: string): string {
+function lapPrompt(vehicle?: string, locale = 'it'): string {
   const v = vehicle ? ` su ${vehicle}` : ''
+  const lang = languageInstruction(locale)
   return `Sei un coach di guida esperto per lap timer. Analizza i dati di questo giro${v}.
 
-  Rispondi in italiano con un report Markdown ben formattato. Struttura il report così:
+  ${lang} Report in Markdown ben formattato. Struttura il report così:
 
   ## Sintesi giro
   Una riga — giudizio complessivo del giro e delta rispetto 
@@ -260,7 +271,7 @@ async function callClaude(systemPrompt: string, payload: unknown): Promise<LapAi
 // ─── Route handler ─────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
-  let body: { type?: unknown; payload?: unknown; vehicle?: unknown }
+  let body: { type?: unknown; payload?: unknown; vehicle?: unknown; locale?: unknown }
 
   try {
     body = await req.json()
@@ -268,7 +279,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
-  const { type, payload, vehicle } = body
+  const { type, payload, vehicle, locale } = body
+  const resolvedLocale = typeof locale === 'string' && locale.length > 0 ? locale : 'it'
 
   if (type !== 'session' && type !== 'lap') {
     return NextResponse.json({ error: 'type must be "session" or "lap"' }, { status: 400 })
@@ -278,12 +290,13 @@ export async function POST(req: NextRequest) {
   }
 
   const systemPrompt = type === 'session'
-    ? sessionPrompt(vehicle as string | undefined)
-    : lapPrompt(vehicle as string | undefined)
+    ? sessionPrompt(vehicle as string | undefined, resolvedLocale)
+    : lapPrompt(vehicle as string | undefined, resolvedLocale)
 
   console.log('[ai-coach] ── incoming request ──────────────────────')
   console.log('[ai-coach] provider :', AI_PROVIDER)
   console.log('[ai-coach] type     :', type)
+  console.log('[ai-coach] locale   :', resolvedLocale)
   console.log('[ai-coach] vehicle  :', vehicle ?? '(none)')
   console.log('[ai-coach] payload  :', JSON.stringify(payload, null, 2))
   console.log('[ai-coach] system prompt ──────────────────────────')
