@@ -33,10 +33,14 @@ import { NextRequest, NextResponse } from 'next/server'
  * 504  timeout (> 30s)
  */
 
+// Vercel function timeout — must match or exceed TIMEOUT_MS
+// Max: 60s on Pro, 300s on Pro with Fluid Compute
+export const maxDuration = 60
+
 const AI_PROVIDER = (process.env.AI_PROVIDER ?? 'openai') as 'openai' | 'claude'
 const OPENAI_MODEL = process.env.OPENAI_MODEL ?? 'gpt-4.1'
 const CLAUDE_MODEL = process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-6'
-const TIMEOUT_MS = 30_000
+const TIMEOUT_MS = 55_000 // slightly under maxDuration to return 504 before Vercel hard-kills
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 

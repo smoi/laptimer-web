@@ -78,6 +78,9 @@ import { NextRequest, NextResponse } from 'next/server'
  * CLAUDE_MODEL       = claude-sonnet-4-6     (default)
  */
 
+// Vercel function timeout
+export const maxDuration = 60
+
 // ─── Global provider switch ────────────────────────────────────────────────
 // Set AI_PROVIDER=claude in .env.local to route all requests through Anthropic.
 // Falls back to 'openai' if not set.
