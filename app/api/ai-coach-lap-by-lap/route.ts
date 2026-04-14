@@ -107,6 +107,24 @@ Problemi tecnici che compaiono in 3+ giri. Massimo 3 punti.
 Formato: "**{zona/settore}**: {problema} — presente in giri {N,N,N}"
 Questi sono i veri obiettivi strutturali della sessione.
 
+Dopo il report Markdown, aggiungi un blocco JSON separato 
+con tag cues_json con i suggerimenti georeferenziati 
+estratti dall'analisi.
+
+Per ogni pattern ricorrente e per ogni settore critico 
+identificato, produci un cue con questo schema:
+{
+  "lap": <numero giro o null se vale per tutta la sessione>,
+  "zone": "<nome curva o zona di pista>",
+  "trigger_distance_m": <metri prima della zona dove mostrare il cue, default 300>,
+  "text": "<suggerimento concreto max 12 parole>",
+  "priority": <1=critico, 2=importante, 3=informativo>,
+  "type": <"warning"|"positive"|"info">
+}
+
+Produci massimo 8 cue totali, ordinati per priority.
+Includi solo cue con zone riconoscibili su questo circuito.
+
 Traduci l'intero report nella lingua: ${body.language}`
 }
 
@@ -186,6 +204,34 @@ function validate(body: unknown): body is RequestBody {
   )
 }
 
+// ─── Response parser ───────────────────────────────────────────────────────
+
+type Cue = {
+  lap: number | null
+  brake_zone_index: number
+  text: string
+  priority: 1 | 2 | 3
+  type: 'warning' | 'positive' | 'info'
+}
+
+function parseAiResponse(rawText: string): { report: string; cues: Cue[] } {
+  const cuesMatch = rawText.match(/```cues_json\s*([\s\S]*?)\s*```/)
+
+  let cues: Cue[] = []
+  if (cuesMatch) {
+    try {
+      const parsed = JSON.parse(cuesMatch[1]) as { cues?: Cue[] }
+      cues = parsed.cues ?? []
+    } catch {
+      // parsing failed — return empty cues, report still usable
+    }
+  }
+
+  const report = rawText.replace(/```cues_json[\s\S]*?```/, '').trim()
+
+  return { report, cues }
+}
+
 // ─── Route handler ─────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
@@ -219,12 +265,14 @@ export async function POST(req: NextRequest) {
   console.log('[ai-coach-lap-by-lap] ──────────────────────────────────')
 
   try {
-    const report = AI_PROVIDER === 'claude'
+    const raw = AI_PROVIDER === 'claude'
       ? await callClaudeText(systemPrompt, userContent)
       : await callOpenAIText(systemPrompt, userContent)
 
-    console.log('[ai-coach-lap-by-lap] done — chars:', report.length)
-    return NextResponse.json({ report })
+    const { report, cues } = parseAiResponse(raw)
+
+    console.log('[ai-coach-lap-by-lap] done — chars:', report.length, '— cues:', cues.length)
+    return NextResponse.json({ report, cues })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
     console.error('[ai-coach-lap-by-lap]', message)
