@@ -112,24 +112,13 @@ Traduci l'intero report nella lingua: ${body.language}
 Dopo il report aggiungi OBBLIGATORIAMENTE questo blocco 
 con tag esattamente \`\`\`cues_json (non \`\`\`json).
 
-Per ogni cue usa brake_zone_index (intero 0-based) 
-NON il nome della zona — l'app usa l'indice per trovare 
-le coordinate GPS reali nel payload.
-
-Come trovare brake_zone_index:
-- Prima Variante → BZ con speed_drop più alto nel giro best (lap 6, index 0)
-- Seconda Variante → seconda BZ con speed_drop > 100 (lap 6, index 1)  
-- Lesmo → BZ con entry ~165 km/h, speed_drop ~68 (lap 6, index 5)
-- Ascari → BZ con entry ~247 km/h, speed_drop ~150 (lap 6, index 6)
-- Parabolica → ultima BZ con speed_drop > 100 (lap 6, index 7)
-
 \`\`\`cues_json
 {
   "cues": [
     {
-      "lap": <numero giro intero, usa 6 per pattern generali>,
-      "brake_zone_index": <indice 0-based in brake_zones di quel giro>,
-      "text": "<suggerimento max 12 parole in lingua ${body.language}>",
+      "lap": <numero giro>,
+      "brake_zone_index": <indice 0-based in brake_zones di QUEL giro>,
+      "text": "<suggerimento max 12 parole in lingua ${payload.language}>",
       "priority": <1|2|3>,
       "type": "<warning|positive|info>"
     }
@@ -137,8 +126,21 @@ Come trovare brake_zone_index:
 }
 \`\`\`
 
-Massimo 5 cue. JSON valido obbligatorio. 
-Nessun testo fuori dal blocco cues_json.`
+Regole IMPORTANTI:
+- "lap" deve essere il giro dove si è verificato il problema,
+  NON sempre il best lap
+- "brake_zone_index" deve essere l'indice nell'array 
+  brake_zones di QUEL giro specifico (non del best lap)
+- Per ogni pattern ricorrente usa il giro più recente 
+  dove si è verificato (es. se Prima Variante problematica 
+  in giri 3,4,5 → usa lap:5)
+- Per il best lap aggiungi 1 cue positivo sul settore migliore
+- Se lo stesso problema appare in più giri, produci UN SOLO 
+  cue per il pattern usando il giro più rappresentativo
+- Conta gli indici da 0 nell'array brake_zones del giro 
+  specificato — non usare gli indici del best lap su altri giri
+- Massimo 5 cue totali
+- JSON valido obbligatorio.`
 }
 
 // ─── Provider calls (text output) ─────────────────────────────────────────
