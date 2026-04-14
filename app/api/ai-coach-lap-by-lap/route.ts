@@ -118,7 +118,7 @@ con tag esattamente \`\`\`cues_json (non \`\`\`json).
     {
       "lap": <numero giro>,
       "brake_zone_index": <indice 0-based in brake_zones di QUEL giro>,
-      "text": "<suggerimento max 12 parole in lingua ${payload.language}>",
+      "text": "<suggerimento max 12 parole in lingua ${body.language}>",
       "priority": <1|2|3>,
       "type": "<warning|positive|info>"
     }
