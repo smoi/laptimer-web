@@ -109,42 +109,38 @@ Questi sono i veri obiettivi strutturali della sessione.
 
 Traduci l'intero report nella lingua: ${body.language}
 
-Dopo il report aggiungi OBBLIGATORIAMENTE questo blocco 
-con tag esattamente \`\`\`cues_json (non \`\`\`json).
-
-Per ogni giro NON outlier e NON anomalo (escludi giri con 
-delta > 15s o brake_zones > 15), genera 2-3 cue specifici 
-basati sull'analisi di QUEL giro.
+Dopo il report aggiungi OBBLIGATORIAMENTE il blocco cues_json.
+Usa ESATTAMENTE questa struttura — un dizionario per giro,
+NON un array flat:
 
 \`\`\`cues_json
 {
   "cues_by_lap": {
-    "<numero_giro>": [
-      {
-        "brake_zone_index": <indice 0-based in brake_zones di QUEL giro>,
-        "text": "<osservazione specifica su quella frenata, max 12 parole, lingua: ${payload.language}>",
-        "priority": <1=critico|2=importante|3=info>,
-        "type": "<warning|positive|info>"
-      }
+    "3": [
+      {"brake_zone_index": 0, "text": "Prima Variante: rilascia freno prima, uscita 64 km/h", "priority": 1, "type": "warning"},
+      {"brake_zone_index": 6, "text": "Ascari: traiettoria ok, mantieni questo ritmo", "priority": 3, "type": "positive"}
+    ],
+    "6": [
+      {"brake_zone_index": 0, "text": "Prima Variante best lap: questo è il riferimento", "priority": 3, "type": "positive"},
+      {"brake_zone_index": 7, "text": "Parabolica perfetta: uscita 108 km/h, mantieni", "priority": 3, "type": "positive"}
     ]
   }
 }
 \`\`\`
 
-Regole:
-- La chiave del dizionario è il numero giro come stringa
-- brake_zone_index è 0-based nell'array brake_zones 
-  di QUEL giro specifico
-- Per ogni giro includi:
-  * 1 cue WARNING sulla brake_zone con il problema 
-    più evidente (exit speed bassa o entry anomala)
-  * 1 cue POSITIVE sulla brake_zone migliore del giro
-  * 1 cue INFO opzionale su una zona borderline
-- Per il best lap (delta_ms: 0) usa solo cue POSITIVE
-- Ometti giri con outlier:true o con brake_zones > 15
-- Ogni testo deve riferirsi ai valori numerici reali 
-  di entry/exit di QUEL giro — non generalizzare
-- JSON valido obbligatorio.`
+Regole tassative:
+- cues_by_lap è un dizionario: chiave = numero giro come stringa
+- NON usare un array flat con campo "lap" — struttura esatta come sopra
+- Includi solo giri con brake_zones <= 12 e delta < 15000ms
+- Per ogni giro 2-3 cue:
+  * 1 WARNING: brake_zone con exit speed più bassa rispetto al best lap
+  * 1 POSITIVE: brake_zone migliore del giro
+  * 1 INFO opzionale: zona borderline
+- Best lap (delta_ms: 0): solo cue POSITIVE
+- brake_zone_index è 0-based nell'array brake_zones di QUEL giro
+- Il testo deve citare i valori numerici reali entry/exit di QUEL giro
+- Lingua risposta: ${body.language}
+- JSON valido obbligatorio — nessun testo fuori dal blocco`
 }
 
 // ─── Provider calls (text output) ─────────────────────────────────────────
@@ -225,39 +221,68 @@ function validate(body: unknown): body is RequestBody {
 
 // ─── Response parser ───────────────────────────────────────────────────────
 
-type Cue = {
-  lap: number | null
+type LapCue = {
   brake_zone_index: number
   text: string
   priority: 1 | 2 | 3
   type: 'warning' | 'positive' | 'info'
 }
 
-function parseAiResponse(rawText: string): { report: string; cues: Cue[] } {
-  const cuesMatch =
-    rawText.match(/```cues_json\s*\n([\s\S]*?)\n\s*```/) ??
-    rawText.match(/```cues_json([\s\S]*?)```/)
+type CuesByLap = Record<string, LapCue[]>
 
-  const matchGroup = cuesMatch?.[1]
+// Legacy flat-array shape the AI sometimes returns despite instructions
+type FlatCue = LapCue & { lap?: number | null }
 
-  let cues: Cue[] = []
+function parseAiResponse(rawText: string): { report: string; cues_by_lap: CuesByLap } {
+  const matchGroup =
+    rawText.match(/```cues_json\s*([\s\S]*?)```/)?.[1] ??
+    rawText.match(/```json\s*(\{[\s\S]*?\})\s*```\s*$/)?.[1]
+
+  let cuesByLap: CuesByLap = {}
+
   if (matchGroup) {
     try {
-      const parsed = JSON.parse(matchGroup.trim()) as { cues?: Cue[] }
-      cues = Array.isArray(parsed.cues) ? parsed.cues : []
+      const parsed = JSON.parse(matchGroup.trim()) as Record<string, unknown>
+
+      if (parsed['cues_by_lap'] && typeof parsed['cues_by_lap'] === 'object' && !Array.isArray(parsed['cues_by_lap'])) {
+        cuesByLap = parsed['cues_by_lap'] as CuesByLap
+        console.log('[ai-coach-lap-by-lap] cues_by_lap parsed, laps:', Object.keys(cuesByLap))
+      } else if (Array.isArray(parsed['cues'])) {
+        console.warn('[ai-coach-lap-by-lap] flat cues array received — converting')
+        ;(parsed['cues'] as FlatCue[]).forEach((cue) => {
+          const key = String(cue.lap ?? 'session')
+          if (!cuesByLap[key]) cuesByLap[key] = []
+          const { lap: _lap, ...rest } = cue
+          cuesByLap[key].push(rest as LapCue)
+        })
+      } else if (Array.isArray(parsed)) {
+        console.warn('[ai-coach-lap-by-lap] bare array received — converting')
+        ;(parsed as FlatCue[]).forEach((cue) => {
+          const key = String(cue.lap ?? 'session')
+          if (!cuesByLap[key]) cuesByLap[key] = []
+          const { lap: _lap, ...rest } = cue
+          cuesByLap[key].push(rest as LapCue)
+        })
+      } else {
+        console.warn('[ai-coach-lap-by-lap] unknown cues format:', JSON.stringify(parsed).slice(0, 100))
+      }
     } catch (e) {
-      console.error('[ai-coach-lap-by-lap] cues_json parse error:', (e as Error).message)
+      console.error('[ai-coach-lap-by-lap] cues parse error:', (e as Error).message)
+      console.error('[ai-coach-lap-by-lap] raw block:', matchGroup?.slice(0, 300))
     }
   } else {
-    console.warn('[ai-coach-lap-by-lap] cues_json block not found in response')
-    console.log('[ai-coach-lap-by-lap] raw tail:', rawText.slice(-500))
+    console.warn('[ai-coach-lap-by-lap] no cues block found in response')
+    console.warn('[ai-coach-lap-by-lap] response tail:', rawText.slice(-400))
   }
 
-  console.log('[ai-coach-lap-by-lap] cues found:', cues.length)
+  console.log('[ai-coach-lap-by-lap] cues_by_lap keys:', Object.keys(cuesByLap))
 
-  const report = rawText.replace(/```cues_json[\s\S]*?```/, '').trim()
+  const report = rawText
+    .replace(/```cues_json[\s\S]*?```/, '')
+    .replace(/```json\s*\{[\s\S]*?\}\s*```\s*$/, '')
+    .trim()
 
-  return { report, cues }
+  return { report, cues_by_lap: cuesByLap }
 }
 
 // ─── Route handler ─────────────────────────────────────────────────────────
@@ -297,10 +322,10 @@ export async function POST(req: NextRequest) {
       ? await callClaudeText(systemPrompt, userContent)
       : await callOpenAIText(systemPrompt, userContent)
 
-    const { report, cues } = parseAiResponse(raw)
+    const { report, cues_by_lap } = parseAiResponse(raw)
 
-    console.log('[ai-coach-lap-by-lap] done — chars:', report.length, '— cues:', cues.length)
-    return NextResponse.json({ report, cues })
+    console.log('[ai-coach-lap-by-lap] done — chars:', report.length, '— cues_by_lap keys:', Object.keys(cues_by_lap))
+    return NextResponse.json({ report, cues_by_lap })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
     console.error('[ai-coach-lap-by-lap]', message)
