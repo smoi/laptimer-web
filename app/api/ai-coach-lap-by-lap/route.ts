@@ -107,25 +107,33 @@ Problemi tecnici che compaiono in 3+ giri. Massimo 3 punti.
 Formato: "**{zona/settore}**: {problema} — presente in giri {N,N,N}"
 Questi sono i veri obiettivi strutturali della sessione.
 
-Dopo il report Markdown, aggiungi un blocco JSON separato 
-con tag cues_json con i suggerimenti georeferenziati 
-estratti dall'analisi.
+Traduci l'intero report nella lingua: ${body.language}
 
-Per ogni pattern ricorrente e per ogni settore critico 
-identificato, produci un cue con questo schema:
+Dopo il report, aggiungi obbligatoriamente il blocco seguente.
+Non ometterlo in nessun caso — è richiesto dal sistema.
+
+\`\`\`cues_json
 {
-  "lap": <numero giro o null se vale per tutta la sessione>,
-  "zone": "<nome curva o zona di pista>",
-  "trigger_distance_m": <metri prima della zona dove mostrare il cue, default 300>,
-  "text": "<suggerimento concreto max 12 parole>",
-  "priority": <1=critico, 2=importante, 3=informativo>,
-  "type": <"warning"|"positive"|"info">
+  "cues": [
+    {
+      "lap": <numero giro>,
+      "brake_zone_index": <indice 0-based in brake_zones>,
+      "text": "<max 12 parole in lingua ${body.language}>",
+      "priority": <1|2|3>,
+      "type": "<warning|positive|info>"
+    }
+  ]
 }
+\`\`\`
 
-Produci massimo 8 cue totali, ordinati per priority.
-Includi solo cue con zone riconoscibili su questo circuito.
-
-Traduci l'intero report nella lingua: ${body.language}`
+Regole cues:
+- 1 cue per ogni pattern in "Pattern ricorrenti"
+- 1 cue per il settore critico del giro best
+- brake_zone_index: conta da 0 nell'array brake_zones del giro specificato in "lap"
+- Prima Variante/S1 → brake_zone_index: 0
+- Ultima frenata forte (speed_drop > 100) → S3/Parabolica
+- Massimo 5 cue, ometti se non sei sicuro dell'indice
+- JSON valido obbligatorio`
 }
 
 // ─── Provider calls (text output) ─────────────────────────────────────────
@@ -215,17 +223,26 @@ type Cue = {
 }
 
 function parseAiResponse(rawText: string): { report: string; cues: Cue[] } {
-  const cuesMatch = rawText.match(/```cues_json\s*([\s\S]*?)\s*```/)
+  const cuesMatch =
+    rawText.match(/```cues_json\s*\n([\s\S]*?)\n\s*```/) ??
+    rawText.match(/```cues_json([\s\S]*?)```/)
+
+  const matchGroup = cuesMatch?.[1]
 
   let cues: Cue[] = []
-  if (cuesMatch) {
+  if (matchGroup) {
     try {
-      const parsed = JSON.parse(cuesMatch[1]) as { cues?: Cue[] }
-      cues = parsed.cues ?? []
-    } catch {
-      // parsing failed — return empty cues, report still usable
+      const parsed = JSON.parse(matchGroup.trim()) as { cues?: Cue[] }
+      cues = Array.isArray(parsed.cues) ? parsed.cues : []
+    } catch (e) {
+      console.error('[ai-coach-lap-by-lap] cues_json parse error:', (e as Error).message)
     }
+  } else {
+    console.warn('[ai-coach-lap-by-lap] cues_json block not found in response')
+    console.log('[ai-coach-lap-by-lap] raw tail:', rawText.slice(-500))
   }
+
+  console.log('[ai-coach-lap-by-lap] cues found:', cues.length)
 
   const report = rawText.replace(/```cues_json[\s\S]*?```/, '').trim()
 
