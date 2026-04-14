@@ -222,31 +222,33 @@ type Cue = {
   type: 'warning' | 'positive' | 'info'
 }
 
-function parseAiResponse(rawText: string): { report: string; cues: Cue[] } {
-  const cuesMatch =
-    rawText.match(/```cues_json\s*\n([\s\S]*?)\n\s*```/) ??
-    rawText.match(/```cues_json([\s\S]*?)```/)
-
-  const matchGroup = cuesMatch?.[1]
-
-  let cues: Cue[] = []
-  if (matchGroup) {
-    try {
-      const parsed = JSON.parse(matchGroup.trim()) as { cues?: Cue[] }
-      cues = Array.isArray(parsed.cues) ? parsed.cues : []
-    } catch (e) {
-      console.error('[ai-coach-lap-by-lap] cues_json parse error:', (e as Error).message)
-    }
-  } else {
-    console.warn('[ai-coach-lap-by-lap] cues_json block not found in response')
-    console.log('[ai-coach-lap-by-lap] raw tail:', rawText.slice(-500))
+function parseAiResponse(rawText) {
+  // Prova prima cues_json (formato corretto)
+  let match = rawText.match(/```cues_json\s*([\s\S]*?)```/);
+  
+  // Fallback: json alla fine del testo
+  if (!match) {
+    match = rawText.match(/```json\s*(\[[\s\S]*?\])\s*```\s*$/);
   }
 
-  console.log('[ai-coach-lap-by-lap] cues found:', cues.length)
+  let cues = [];
+  if (match) {
+    try {
+      const parsed = JSON.parse(match[1].trim());
+      // Gestisci sia array diretto che oggetto con .cues
+      cues = Array.isArray(parsed) ? parsed : (parsed.cues ?? []);
+    } catch (e) {
+      console.error('[AI] cues parse error:', e.message);
+    }
+  }
 
-  const report = rawText.replace(/```cues_json[\s\S]*?```/, '').trim()
+  // Rimuovi il blocco cues dal report
+  const report = rawText
+    .replace(/```cues_json[\s\S]*?```/, '')
+    .replace(/```json\s*\[[\s\S]*?\]\s*```\s*$/, '')
+    .trim();
 
-  return { report, cues }
+  return { report, cues };
 }
 
 // ─── Route handler ─────────────────────────────────────────────────────────
