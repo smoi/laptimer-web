@@ -138,7 +138,7 @@ Come trovare brake_zone_index:
 \`\`\`
 
 Massimo 5 cue. JSON valido obbligatorio. 
-Nessun testo fuori dal blocco cues_json.
+Nessun testo fuori dal blocco cues_json.`
 }
 
 // ─── Provider calls (text output) ─────────────────────────────────────────
