@@ -112,34 +112,38 @@ Traduci l'intero report nella lingua: ${body.language}
 Dopo il report aggiungi OBBLIGATORIAMENTE questo blocco 
 con tag esattamente \`\`\`cues_json (non \`\`\`json).
 
+Per ogni giro NON outlier e NON anomalo (escludi giri con 
+delta > 15s o brake_zones > 15), genera 2-3 cue specifici 
+basati sull'analisi di QUEL giro.
+
 \`\`\`cues_json
 {
-  "cues": [
-    {
-      "lap": <numero giro>,
-      "brake_zone_index": <indice 0-based in brake_zones di QUEL giro>,
-      "text": "<suggerimento max 12 parole in lingua ${body.language}>",
-      "priority": <1|2|3>,
-      "type": "<warning|positive|info>"
-    }
-  ]
+  "cues_by_lap": {
+    "<numero_giro>": [
+      {
+        "brake_zone_index": <indice 0-based in brake_zones di QUEL giro>,
+        "text": "<osservazione specifica su quella frenata, max 12 parole, lingua: ${payload.language}>",
+        "priority": <1=critico|2=importante|3=info>,
+        "type": "<warning|positive|info>"
+      }
+    ]
+  }
 }
 \`\`\`
 
-Regole IMPORTANTI:
-- "lap" deve essere il giro dove si è verificato il problema,
-  NON sempre il best lap
-- "brake_zone_index" deve essere l'indice nell'array 
-  brake_zones di QUEL giro specifico (non del best lap)
-- Per ogni pattern ricorrente usa il giro più recente 
-  dove si è verificato (es. se Prima Variante problematica 
-  in giri 3,4,5 → usa lap:5)
-- Per il best lap aggiungi 1 cue positivo sul settore migliore
-- Se lo stesso problema appare in più giri, produci UN SOLO 
-  cue per il pattern usando il giro più rappresentativo
-- Conta gli indici da 0 nell'array brake_zones del giro 
-  specificato — non usare gli indici del best lap su altri giri
-- Massimo 5 cue totali
+Regole:
+- La chiave del dizionario è il numero giro come stringa
+- brake_zone_index è 0-based nell'array brake_zones 
+  di QUEL giro specifico
+- Per ogni giro includi:
+  * 1 cue WARNING sulla brake_zone con il problema 
+    più evidente (exit speed bassa o entry anomala)
+  * 1 cue POSITIVE sulla brake_zone migliore del giro
+  * 1 cue INFO opzionale su una zona borderline
+- Per il best lap (delta_ms: 0) usa solo cue POSITIVE
+- Ometti giri con outlier:true o con brake_zones > 15
+- Ogni testo deve riferirsi ai valori numerici reali 
+  di entry/exit di QUEL giro — non generalizzare
 - JSON valido obbligatorio.`
 }
 
