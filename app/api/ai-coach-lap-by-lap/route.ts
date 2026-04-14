@@ -33,14 +33,9 @@ import { NextRequest, NextResponse } from 'next/server'
  * 504  timeout (> 30s)
  */
 
-// Vercel function timeout — must match or exceed TIMEOUT_MS
-// Max: 60s on Pro, 300s on Pro with Fluid Compute
-export const maxDuration = 60
-
 const AI_PROVIDER = (process.env.AI_PROVIDER ?? 'openai') as 'openai' | 'claude'
 const OPENAI_MODEL = process.env.OPENAI_MODEL ?? 'gpt-4.1'
 const CLAUDE_MODEL = process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-6'
-const TIMEOUT_MS = 55_000 // slightly under maxDuration to return 504 before Vercel hard-kills
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
@@ -223,27 +218,15 @@ export async function POST(req: NextRequest) {
   console.log('[ai-coach-lap-by-lap] laps      :', body.laps.length)
   console.log('[ai-coach-lap-by-lap] ──────────────────────────────────')
 
-  const timeout = new Promise<never>((_, reject) =>
-    setTimeout(() => reject(new Error('TIMEOUT')), TIMEOUT_MS),
-  )
-
   try {
-    const call = AI_PROVIDER === 'claude'
-      ? callClaudeText(systemPrompt, userContent)
-      : callOpenAIText(systemPrompt, userContent)
-
-    const report = await Promise.race([call, timeout])
+    const report = AI_PROVIDER === 'claude'
+      ? await callClaudeText(systemPrompt, userContent)
+      : await callOpenAIText(systemPrompt, userContent)
 
     console.log('[ai-coach-lap-by-lap] done — chars:', report.length)
     return NextResponse.json({ report })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
-
-    if (message === 'TIMEOUT') {
-      console.error('[ai-coach-lap-by-lap] timeout after', TIMEOUT_MS, 'ms')
-      return NextResponse.json({ error: 'Request timed out' }, { status: 504 })
-    }
-
     console.error('[ai-coach-lap-by-lap]', message)
     return NextResponse.json({ error: message }, { status: 502 })
   }
