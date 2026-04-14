@@ -183,9 +183,15 @@ function AppBadge({
   label: string
   storeName: string
 }) {
+  const href = store === 'apple'
+    ? 'https://apps.apple.com/it/app/lapcoach-gps-lap-timer/id6761366145'
+    : 'https://play.google.com/store/apps/details?id=com.lapcoach.app'
+
   return (
     <a
-      href="#"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="flex items-center gap-3 border border-pit-500 bg-pit-800 hover:border-lap hover:bg-pit-700 transition-all duration-200 px-6 py-4"
     >
       {store === 'apple' ? (
