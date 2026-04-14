@@ -109,16 +109,27 @@ Questi sono i veri obiettivi strutturali della sessione.
 
 Traduci l'intero report nella lingua: ${body.language}
 
-Dopo il report, aggiungi obbligatoriamente il blocco seguente.
-Non ometterlo in nessun caso — è richiesto dal sistema.
+Dopo il report aggiungi OBBLIGATORIAMENTE questo blocco 
+con tag esattamente \`\`\`cues_json (non \`\`\`json).
+
+Per ogni cue usa brake_zone_index (intero 0-based) 
+NON il nome della zona — l'app usa l'indice per trovare 
+le coordinate GPS reali nel payload.
+
+Come trovare brake_zone_index:
+- Prima Variante → BZ con speed_drop più alto nel giro best (lap 6, index 0)
+- Seconda Variante → seconda BZ con speed_drop > 100 (lap 6, index 1)  
+- Lesmo → BZ con entry ~165 km/h, speed_drop ~68 (lap 6, index 5)
+- Ascari → BZ con entry ~247 km/h, speed_drop ~150 (lap 6, index 6)
+- Parabolica → ultima BZ con speed_drop > 100 (lap 6, index 7)
 
 \`\`\`cues_json
 {
   "cues": [
     {
-      "lap": <numero giro>,
-      "brake_zone_index": <indice 0-based in brake_zones>,
-      "text": "<max 12 parole in lingua ${body.language}>",
+      "lap": <numero giro intero, usa 6 per pattern generali>,
+      "brake_zone_index": <indice 0-based in brake_zones di quel giro>,
+      "text": "<suggerimento max 12 parole in lingua ${body.language}>",
       "priority": <1|2|3>,
       "type": "<warning|positive|info>"
     }
@@ -126,14 +137,8 @@ Non ometterlo in nessun caso — è richiesto dal sistema.
 }
 \`\`\`
 
-Regole cues:
-- 1 cue per ogni pattern in "Pattern ricorrenti"
-- 1 cue per il settore critico del giro best
-- brake_zone_index: conta da 0 nell'array brake_zones del giro specificato in "lap"
-- Prima Variante/S1 → brake_zone_index: 0
-- Ultima frenata forte (speed_drop > 100) → S3/Parabolica
-- Massimo 5 cue, ometti se non sei sicuro dell'indice
-- JSON valido obbligatorio`
+Massimo 5 cue. JSON valido obbligatorio. 
+Nessun testo fuori dal blocco cues_json.
 }
 
 // ─── Provider calls (text output) ─────────────────────────────────────────
@@ -222,33 +227,31 @@ type Cue = {
   type: 'warning' | 'positive' | 'info'
 }
 
-function parseAiResponse(rawText) {
-  // Prova prima cues_json (formato corretto)
-  let match = rawText.match(/```cues_json\s*([\s\S]*?)```/);
-  
-  // Fallback: json alla fine del testo
-  if (!match) {
-    match = rawText.match(/```json\s*(\[[\s\S]*?\])\s*```\s*$/);
-  }
+function parseAiResponse(rawText: string): { report: string; cues: Cue[] } {
+  const cuesMatch =
+    rawText.match(/```cues_json\s*\n([\s\S]*?)\n\s*```/) ??
+    rawText.match(/```cues_json([\s\S]*?)```/)
 
-  let cues = [];
-  if (match) {
+  const matchGroup = cuesMatch?.[1]
+
+  let cues: Cue[] = []
+  if (matchGroup) {
     try {
-      const parsed = JSON.parse(match[1].trim());
-      // Gestisci sia array diretto che oggetto con .cues
-      cues = Array.isArray(parsed) ? parsed : (parsed.cues ?? []);
+      const parsed = JSON.parse(matchGroup.trim()) as { cues?: Cue[] }
+      cues = Array.isArray(parsed.cues) ? parsed.cues : []
     } catch (e) {
-      console.error('[AI] cues parse error:', e.message);
+      console.error('[ai-coach-lap-by-lap] cues_json parse error:', (e as Error).message)
     }
+  } else {
+    console.warn('[ai-coach-lap-by-lap] cues_json block not found in response')
+    console.log('[ai-coach-lap-by-lap] raw tail:', rawText.slice(-500))
   }
 
-  // Rimuovi il blocco cues dal report
-  const report = rawText
-    .replace(/```cues_json[\s\S]*?```/, '')
-    .replace(/```json\s*\[[\s\S]*?\]\s*```\s*$/, '')
-    .trim();
+  console.log('[ai-coach-lap-by-lap] cues found:', cues.length)
 
-  return { report, cues };
+  const report = rawText.replace(/```cues_json[\s\S]*?```/, '').trim()
+
+  return { report, cues }
 }
 
 // ─── Route handler ─────────────────────────────────────────────────────────
