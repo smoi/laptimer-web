@@ -269,7 +269,7 @@
       "label": "Screenshots",
       "title": "Designed for the track",
       "description": "High-contrast UI, readable even with the visor down and in direct sunlight.",
-      "labels": ["On track", "Session", "Lap detail", "Sessions", "Circuits", "Home"]
+      "labels": ["On track", "Session", "Lap detail", "Sessions", "Video Telemetry", "Home"]
     },
     "cta": {
       "label": "Free",

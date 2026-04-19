@@ -1,9 +1,9 @@
-import { getTranslations } from 'next-intl/server'
-import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import PhoneMockup from '@/components/PhoneMockup'
 import { Apple, Archive, BarChart2, Bluetooth, Brain, Film, Gauge, Map, MapPin, Smartphone, Timer, TrendingUp, Volume2, Zap } from 'lucide-react'
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 
 const featureIcons = [Timer, TrendingUp, BarChart2, Gauge, Brain, Film, Bluetooth, MapPin, Zap, Volume2, Map, Archive]
 
@@ -12,7 +12,7 @@ const screenshots = [
   { src: '/screenshots/screen-sessione.png', labelKey: 1 },
   { src: '/screenshots/screen-giro.png',     labelKey: 2 },
   { src: '/screenshots/screen-sessioni.png', labelKey: 3 },
-  { src: '/screenshots/screen-circuiti.png', labelKey: 4 },
+  { src: '/screenshots/video-telemetry.png', labelKey: 4 },
   { src: '/screenshots/screen-home.png',     labelKey: 5 },
 ]
 

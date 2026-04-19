@@ -269,7 +269,7 @@
       "label": "Schermate",
       "title": "Progettata per la pista",
       "description": "UI ad alto contrasto, leggibile anche con il casco abbassato e alla luce solare diretta.",
-      "labels": ["In pista", "Sessione", "Dettaglio Giro", "Sessioni", "Circuiti", "Home"]
+      "labels": ["In pista", "Sessione", "Dettaglio Giro", "Sessioni", "Telemetria Video", "Home"]
     },
     "cta": {
       "label": "Gratis",
