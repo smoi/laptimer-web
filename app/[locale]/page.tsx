@@ -4,6 +4,7 @@ import Footer from '@/components/Footer'
 import Navbar from '@/components/Navbar'
 import ProductCard from '@/components/ProductCard'
 import WaitlistSection from '@/components/WaitlistSection'
+import { buildSeoMetadata } from '@/i18n/seo'
 import { Apple, Bluetooth, Brain, Check, ChevronRight, Film, Map, Satellite, Smartphone, Volume2, Zap } from 'lucide-react'
 
 export async function generateMetadata({
@@ -11,9 +12,10 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
-  const { locale } = params
-  const t = await getTranslations({ locale, namespace: 'metadata.home' })
-  return { title: t('title'), description: t('description') }
+  return buildSeoMetadata({
+    locale: params.locale,
+    namespace: 'metadata.home',
+  })
 }
 
 export default async function Home() {

@@ -1,29 +1,25 @@
 import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getTranslations } from 'next-intl/server'
+import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import HtmlLang from '@/components/HtmlLang'
 import IubendaLoader from '@/components/IubendaLoader'
 import { routing } from '@/i18n/routing'
+import { buildSeoMetadata, SITE_URL } from '@/i18n/seo'
 
 export async function generateMetadata({
   params,
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
-  const { locale } = params
-  const t = await getTranslations({ locale, namespace: 'metadata.home' })
+  const seo = await buildSeoMetadata({
+    locale: params.locale,
+    namespace: 'metadata.home',
+  })
   return {
-    title: t('title'),
-    description: t('description'),
-    alternates: {
-      languages: {
-        'it': 'https://lapcoach.racing/',
-        'en': 'https://lapcoach.racing/en',
-        'x-default': 'https://lapcoach.racing/',
-      },
-    },
+    metadataBase: new URL(SITE_URL),
+    ...seo,
   }
 }
 

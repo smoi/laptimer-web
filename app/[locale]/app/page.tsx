@@ -4,6 +4,7 @@ import PhoneMockup from '@/components/PhoneMockup'
 import { Apple, Archive, BarChart2, Bluetooth, Brain, Film, Gauge, Map, MapPin, Smartphone, Timer, TrendingUp, Volume2, Zap } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
+import { buildSeoMetadata } from '@/i18n/seo'
 
 const featureIcons = [Timer, TrendingUp, BarChart2, Gauge, Brain, Film, Bluetooth, MapPin, Zap, Volume2, Map, Archive]
 
@@ -21,9 +22,11 @@ export async function generateMetadata({
 }: {
   params: { locale: string }
 }): Promise<Metadata> {
-  const { locale } = params
-  const t = await getTranslations({ locale, namespace: 'metadata.app' })
-  return { title: t('title'), description: t('description') }
+  return buildSeoMetadata({
+    locale: params.locale,
+    namespace: 'metadata.app',
+    path: '/app',
+  })
 }
 
 export default async function AppPage({ params }: { params: { locale: string } }) {
