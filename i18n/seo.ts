@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
-export const SITE_URL = 'https://lapcoach.racing'
+export const SITE_URL = 'https://www.lapcoach.racing'
 
 type BuildArgs = {
   locale: string
